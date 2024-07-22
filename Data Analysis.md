@@ -154,12 +154,188 @@ x = a.tolist()
 print(x)
 ```
 
-
 ### ndarray数组的操作
+```python
+'''
+索引：获取数组中特定位置的元素
+切片：获取数组元素子集的过程
+'''
+import numpy as np
+# 一维数组
+a = np.array([11, 22, 33, 44, 55])
+print(a[2])
+print(a[1:4:2]) # 同python列表 start end(not include) step
+
+# 多维数组
+a = np.arange(24).reshape((2, 3, 4))
+print(a)
+print(a[1, 2, 3])
+print(a[0, 1, 2])
+print(a[-1, -2, -3])
+print(a[:, 1, -3]) # 第一个维度全选 第二个维度取索引为1的元素 第三个维度选索引为-3的元素
+print(a[:, 1:3, :])
+print(a[:, :, ::2])
+```
+
 ### ndarray数组的运算
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407221446226.png)
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407221447426.png)
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407221455310.png)
+```python
+import numpy as np
+a = np.arange(24).reshape((2, 3, 4))
+print(a)
+
+# 数组与标量之间的运算作用于数组的每一个元素
+a.mean()
+a = a / a.mean()
+print(a)
+
+a = np.arange(24).reshape((2, 3, 4))
+print(f"平方运算:{np.square(a)}")
+print(f"开方运算：{np.sqrt(a)}")
+print(f"整数小数分离{np.modf(np.sqrt(a))}") # np.modf()将整数和小数部分分成两个部分
+
+b = np.sqrt(a)
+print(a)
+print(b)
+print(np.maximum(a, b)) # 输出结果浮点数
+print(a > b)
+```
+
 ### 数据的CSV文件存取
+```python
+'''
+CSV文件：逗号分隔值文件
+np.savetxt(frame, array, fmt='%.18e', delimiter=None)
+frame:文件、字符串或产生器 可以是.gz .bz2的压缩文件
+array:存入文件的数组
+fmt:存入文件的格式 %d %.2f %.18e
+delimiter:分割字符串。默认为任何空格
+'''
+# 整数保存
+import numpy as np
+a = np.arange(100).reshape(5, 20)
+np.savetxt('related_data/test1.csv', a, fmt='%d', delimiter=',')
+# 浮点数保存
+a = np.arange(100).reshape(5, 20)
+np.savetxt('related_data/test2.csv', a, fmt='%.1f', delimiter=',')
+
+'''
+np.loadtxt(frame, dtype=np.float, delimiter=None, unpack=False)
+frame:文件、字符串或产生器 可以是.gz .bz2的压缩文件
+dtype:数据类型可选
+delimiter:分割字符串。默认为任何空格
+unpack:若为True，读入属性将分别写入不同变量
+'''
+# 默认浮点型
+b = np.loadtxt('related_data/test1.csv', delimiter=',')
+print(b)
+# 指定整数型
+# * 新版numpy无int类型 使用int_
+b = np.loadtxt('related_data/test1.csv', dtype=np.int_, delimiter=',')
+print(b)
+
+# csv只能有效存储一维和二维数组即load/save函数只能存取一维和二维数组
+```
+
 ### 多维数据的存取
+```python
+'''
+a.tofile(frame, sep='', format='%s')
+frame: 文件、字符串
+sep: 数据分割字符串 如果为空串 写入文件为二进制
+format: 写入数据格式
+'''
+import numpy as np
+
+a= np.arange(100).reshape(5, 10, 2)
+# 只是逐项输出数据 看不出维度信息
+a.tofile("related_data/test1.dat", sep=',', format='%d')
+# 存储为二进制文件 占用空间更小 如果可以知道显示字符的编码以及字节之间的关系就可以实现转化
+a.tofile("related_data/test2.dat", format='%d')
+
+'''
+np.fromfile(frame, dtype=float, count=-1, sep='')
+frame:文件、字符串
+dtype:读取的数据类型
+count:读入元素个数,-1表示读入全部文件
+sep: 数据分割字符串 如果为空串 写入文件为二进制
+
+读取时需要知道存入文件时数组的维度和元素类型
+可以通过再写一个元数组文件存储维度和元素类型信息
+'''
+# 文本文件
+b = np.fromfile('related_data/test1.dat', dtype=np.int_, sep=',')
+print(b)
+b = np.fromfile('related_data/test1.dat', dtype=np.int_, sep=',').reshape(5, 10, 2)
+print(b)
+
+# 二进制文件 无需指定分隔符
+c = np.fromfile("related_data/test2.dat", dtype=np.int_).reshape(5, 10 ,2)
+print(c)
+
+'''
+NumPy便捷文件存取 固定文件格式
+正常文件：np.save(fname, array)   压缩：np.savez(fname, array)
+fname: 文件名 以.npy为扩展名 压缩扩展名为.npz
+array: 数组变量
+
+np.load(fname)
+fname: 文件名 以.npy为扩展名 压缩扩展名为.npz
+
+可以直接还原数组维度和元素类型信息
+因为在文件开头用显示的方式 将数组的源信息存储在了第一行
+'''
+np.save("related_data/test1.npy", a)
+d = np.load("related_data/test1.npy")
+```
+
 ### NumPy的随机数函数
+```python
+import numpy as np
+# rand() 随机数数组 浮点数 符合均匀分布 [0, 1)
+a = np.random.rand(3, 4, 5)
+print(a)
+
+# randn() 标准正态分布
+a = np.random.randn(3, 4, 5)
+print(a)
+
+# randint(low, high, shape) 随机整数数组 [low, high)
+# seed() 使用同样的seed种子 生成的随机数数组相同
+np.random.seed(10)
+a = np.random.randint(100, 200, (3, 4))
+print(a)
+np.random.seed(10)
+b = np.random.randint(100, 200, (3, 4))
+print(b)
+
+# shuffle 数组的第一轴进行随即变换 改变原数组
+np.random.shuffle(a)
+print(a)
+np.random.shuffle(a)
+print(a)
+
+# permutation() 数组的第一轴进行随机变换 不改变原数组 生成新数组
+b = np.random.permutation(a)
+print(b)
+
+# choice(a, size, replace, p) 从一维数组中以概率p抽取元素 形成size形状新数组 replace是否重用新元素 默认True值
+a = np.random.randint(10, 20, (8,))
+print(a)
+print(np.random.choice(a, (3,2)))
+print(np.random.choice(a, (3,2), replace=False))
+print(np.random.choice(a, (3,2), p=a/np.sum(a)))
+
+# uniform(low, high, size) 均匀分布数组
+print(np.random.uniform(0, 10, (3, 4)))
+# normal(loc, scale, size) 正态分布数组 loc均值 scale标准差
+print(np.random.normal(10, 5, (3, 4)))
+# poisson(lam, size)       柏松分布数组 lam随机事件发生率 
+print(np.random.poisson(0.5, (3, 4)))
+```
+
 ### NumPy的统计函数
 ### NumPy的梯度函数
 ### 图像的数组表示
