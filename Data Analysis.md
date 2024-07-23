@@ -1,6 +1,6 @@
 # Python数据分析与展示
-Github：https://github.com/IvenStarry
-学习视频网站：中国大学MOOC北京理工大学嵩天教授 https://www.icourse163.org/course/BIT-1001870002?tid=1472922453
+Github：https://github.com/IvenStarry  
+学习视频网站：中国大学MOOC北京理工大学嵩天教授 https://www.icourse163.org/course/BIT-1001870002?tid=1472922453  
 菜鸟网 https://www.runoob.com/
 
 ## NumPy
@@ -39,12 +39,7 @@ ndarray是一个多维数组对象，由两部分构成：实际的数据，描�
 
 np.array()生成一个ndarray数组 输出成[]形式，元素用空格分割
 轴(axis):保存数据的维度 秩:轴的数量
-ndarray对象属性：
-1. .ndim 轴的数量或维度的数量
-2. .shape 对象的尺度，对于矩阵 n行m列
-3. .size 对象元素的个数 相当于n*m
-4. .dtype 元素类型
-5. .itemsize 对象的每个元素的大小，以字节为单位
+
 ![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407211328315.png)
 ![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407211329907.png)
 ![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407211329850.png)
@@ -52,13 +47,93 @@ python仅支持整数、浮点数和复数3种类型
 科学计算设计数据较多，对存储和性能有较高要求，对元素类型精确定义有助于NumPy合理使用存储空间并优化性能，也有助于程序员对程序规模合理评估
 ```python
 import numpy as np
+# x = np.array(list/tuple, dtype='int32', ndmin) 可以指定数据类型
+# 从列表
+x = np.array([0, 1, 2, 3], dtype=np.float64)
+print(x)
+x = np.array([1, 2, 3], dtype=complex)
+print(x)
+# 从元组
+x = np.array((0, 1, 2, 3))
+print(x)
+# 从列表和元组混合类型创建
+x = np.array(([0, 1], [1, 2], [2, 3], [3, 4]))
+print(x)
+# ndmin 指定生成数组的最小维度
+x = np.array([1, 2, 3, 4, 5], ndmin=2)
+print(x)
+```
+
+### 数据类型
+```python
+import numpy as np
+# bool_ int_ uint8 float_ complex_
+
+# todo dtype(object, align, copy) 转换为的数据类型对象 True填充字段使其类似C的结构体 复制dtype对象，若为false则是对内置数据类型对象的引用
+dt = np.dtype(np.int32)
+print(dt)
+# int8 int16 int32 int64 四种数据类型可以使用字符串'i1' 'i2' 'i4' 'i8'代替
+dt = np.dtype('i4')
+print(dt)
+# 字节顺序标注  <意味着小端法（低位字节存储在低位地址） >意味着大端法（高位字节存放在低位地址）
+dt = np.dtype('<i4')
+print(dt)
+# 创建结构化数据类型
+dt = np.dtype([('age', np.int8)])
+print(dt)
+# 数据类型应用于ndarray对象
+a = np.array([(10, ), (20, ), (30, )], dtype=dt)
+print(a)
+# 类型字段名用于存取实际的age列
+print(a['age'])
+# 定义一个结构化数据类型，将这个dtype应用于ndarray对象
+student = np.dtype([('name', 'S20'), ('age', 'i1'), ('marks', 'f4')])
+print(student)
+a = np.array([('abc', 21, 50), ('xyz', 18, 75)], dtype=student)
+print(a)
+
+"""
+内建类型符号
+b bool
+i int
+u uint
+f float
+c 复数浮点型
+m timedelta 时间间隔
+M datetime 日期时间
+O python对象
+S, a (byte)字符串
+U unicode 统一码 编码格式 数字到文字的映射
+V 原始数据(void)
+"""
+```
+
+### 数据属性
+```python
+import numpy as np
 a = np.array([[0, 1, 2, 3, 4], [9, 8, 7, 6, 5]])
-# ndarray五种属性
+
+"""
+ndarray对象属性：
+1. .ndim 轴的数量或维度的数量
+2. .shape 对象的尺度，对于矩阵 n行m列
+3. .size 对象元素的个数 相当于n*m
+4. .dtype 元素类型
+5. .itemsize 对象的每个元素的大小，以字节为单位
+6. .flags 返回ndarray对象的内存信息 ：包含了
+    C_CONTIGUOUS : True      数据在一个单一C风格的连续段中
+    F_CONTIGUOUS : False     数据是在一个单一的Fortan风格的连续段中
+    OWNDATA : True           数组拥有它所使用的内存或从另外一个对象中借用它  
+    WRITEABLE : True         数据区域可以被写入 若False则只可读  
+    ALIGNED : True           数据和元素都适当对齐在硬件上
+    WRITEBACKIFCOPY : False  这个数组是其他数组的一个副本。当这个数组被释放时，原数组将更新
+"""
 print(a.ndim)
 print(a.shape)
 print(a.size)
 print(a.dtype)
 print(a.itemsize)
+print(a.flags)
 
 # 可以由非同质对象构成(在numpy2.0.0版本中不支持 回退1.23.0版本才可以实现)
 # 非同质ndarray对象无法发挥numpy优势 应避免书写
@@ -71,99 +146,164 @@ print(a.itemsize)
 # print(x.itemsize) # 4
 ```
 
-### ndarray数组的创建和变换
+### 创建数组
 ```python
 import numpy as np
 
-# todo 1.从python的列表、元组等类型创建adarray数组
-# x = np.array(list/tuple, dtype='int32') 可以指定数据类型
-# 从列表
-x = np.array([0, 1, 2, 3], dtype=np.float64)
-print(x)
-# 从元组
-x = np.array((0, 1, 2, 3))
-print(x)
-# 从列表和元组混合类型创建
-x = np.array(([0, 1], [1, 2], [2, 3], [3, 4]))
-print(x)
+# empty(shape, dtype=float, order='C') 生成未初始化数组 order 可选"C"或"F"代表行优先或列有限，在计算机内存中的存储元素的顺序
+x = np.empty([3, 2], dtype=int)
+print(x) # 数组元素随机值
 
-# todo 2.使用NumPy中函数创建adarray数组
 # np.arange(n) 生成从0到n-1的adarray数组 返回整数型数据
 x = np.arange(10)
 print(x)
+
 # np.ones(shape) 生成和shape大小一致的全1矩阵，shape是元组类型 数据类型默认浮点型
 x = np.ones((2, 5))
 print(x)
 x = np.ones((2, 3, 4)) # 从外到内 最外层两个元素 每个元素三个维度 每个维度四个元素
 print(x)
+
 # np.zeros(shape) 生成和shape大小一致的全0矩阵，shape是元组类型 数据类型默认浮点型(可以指定数据类型)
 x = np.zeros((3, 4), dtype=np.int_)
 print(x)
+
 # np.full(shape, val) 生成和shape大小一致的全val矩阵
 x = np.full((3, 4), 10)
 print(x)
+
 # np.eye(n) 生成n*n的单位矩阵 对角线为1 其余为0 数据类型默认浮点型
 x = np.eye(5)
 print(x)
 
 a = [[[1, 2], [2, 3]], [[3, 4], [4, 5]], [[5, 6], [6, 7]]]
-# np.ones_like(a) 根据数组a的形状生成全1数组
-x = np.ones_like(a)
-print(x)
-# np.zeros_like(a) 根据数组a的形状生成全0数组
+# np.ones_like(a) 根据数组a的形状生成全1数组 subok 为True时，使用object的内部数据类型； 为False时，使用数组的数据类型
+#创建矩阵
+a=np.asmatrix([1,2,3,4])
+#输出为矩阵类型
+print(type(a))
+#既要赋值一份副本，又要保持原类型
+at=np.array(a,subok=True)
+af=np.array(a) #默认为False
+print('at.subok为True:',type(at))
+print('af.subok为False:',type(af))
+print(id(af),id(a))
+
+# np.zeros_like(a,order="K") 根据数组a的形状生成全0数组 order默认K保留输入数组的存储顺序 可选C F
 x = np.zeros_like(a)
 print(x)
+
 # np.full_like(a, val) 根据数组a的形状生成全val数组
 x = np.full_like(a, 5)
 print(x)
+```
 
-# todo 3.使用NumPy中其他函数创建adarray数组
-# np.linspace(start, end, num) num数组元素个数 4个元素有三个间隔 间隔为(10-1)/3=3
-a = np.linspace(1, 10, 4)
-print(a)
-# 若设置endpoint则不以end这个数结尾 但仍生成4个数 5个元素（包括10）有四个间隔 间隔变为(10-1)/4=2.25
-b = np.linspace(1, 10, 4, endpoint=False)
-print(b)
-# np,concatenate() 两个或多个数组合并成一个新的数组
-x = np.concatenate((a, b))
-print(x)
+### 从已有的数组创建数组
+```python
+import numpy as np
 
-# todo ndarray数组的变换
-a = np.ones((2, 3, 4), dtype=np.int32)
+# asarray(a, dtype, order) 类似array 参数比array少俩
+x = [1, 2, 3]
+a = np.asarray(x)
 print(a)
-# .reshape(shape) 返回新数组
-x = a.reshape(3, 8)
-print(x)
-# .resize(shape) 修改原数组
-a.resize(4, 6)
+
+# 元组转换ndarray
+x = (1, 2, 3)
+a = np.asarray(x)
 print(a)
-# .swapaxes(ax1, ax2) 将数组的n个维度的2个维度调换 返回新数组 类似转置
-a = np.array([[1, 2, 3, 4, 5], [2, 3, 4, 5, 6]])
+
+# 元组列表转换ndarray 高版本无法生成非同质数组
+# // x = [(1, 2 , 3), (4, 5)]
+# // a = np.asarray(x)
+# // print(a)
+
+# frombuffer(buffer, dtype, count=-1, offset) 实现动态数组 接受buffer输入参数 以流的形式读取转化成ndarray对象 
+# offset读取起始位置 默认0   b" "前缀表示：后面字符串是bytes 类型
+s = b'Hello World!'
+a = np.frombuffer(s, dtype='S1')
 print(a)
-b = a.swapaxes(0, 1)
-print(b)
-# .flatten() 数组降维，返回折叠后的一维数组，原数组不变
-c = a.flatten()
-print(c)
-# .astype(new_type) 转化数据类型 创建新数组
-print(a)
-x = a.astype(np.float64)
-print(x)
-# .tolist() ndarray数组向列表转换
-x = a.tolist()
+
+# fromiter(iterable, dtype, count=-1) 从迭代对象中建立ndarray对象，返回一维数组
+list = range(5)
+it = iter(list)
+x = np.fromiter(it, dtype=float)
 print(x)
 ```
 
-### ndarray数组的操作
+### 从数值范围创建数组
+```python
+import numpy as np
+
+# np.arange(staet, stop, step, dtype)不包含stop
+x = np.arange(10)
+print(x)
+x = np.arange(10, dtype=float)
+print(x)
+x = np.arange(10, 20, 2)
+print(x)
+
+# np.linspace(start, end, num, endpoint=True, retstep=False, dtype) 
+# num数组元素个数 4个元素有三个间隔 间隔为(10-1)/3=3
+a = np.linspace(1, 10, 4)
+print(a)
+# 若设置endpoint为False 则不以end这个数结尾 但仍生成4个数 5个元素（包括10）有四个间隔 间隔变为(10-1)/4=2.25
+b = np.linspace(1, 10, 4, endpoint=False)
+print(b)
+# 设置间距 retstep为True时，生成的数组显示间距
+a = np.linspace(1, 10, 10, retstep=True)
+print(a)
+b = np.linspace(1, 10, 10).reshape([10,1])
+print(b)
+
+# np.logspace(s, s, num, endpoint, base=10.0, dtype) base log的对数
+a = np.logspace(1.0, 2.0, 10)
+print(a)
+
+
+# # np.concatenate() 两个或多个数组合并成一个新的数组
+# x = np.concatenate((a, b))
+# print(x)
+
+
+# # todo ndarray数组的变换
+# a = np.ones((2, 3, 4), dtype=np.int32)
+# print(a)
+# # .reshape(shape) 返回新数组
+# x = a.reshape(3, 8)
+# print(x)
+# # .resize(shape) 修改原数组
+# a.resize(4, 6)
+# print(a)
+# # .swapaxes(ax1, ax2) 将数组的n个维度的2个维度调换 返回新数组 类似转置
+# a = np.array([[1, 2, 3, 4, 5], [2, 3, 4, 5, 6]])
+# print(a)
+# b = a.swapaxes(0, 1)
+# print(b)
+# # .flatten() 数组降维，返回折叠后的一维数组，原数组不变
+# c = a.flatten()
+# print(c)
+# # .astype(new_type) 转化数据类型 创建新数组
+# print(a)
+# x = a.astype(np.float64)
+# print(x)
+# # .tolist() ndarray数组向列表转换
+# x = a.tolist()
+# print(x)
+```
+
+### 切片和索引
 ```python
 '''
 索引：获取数组中特定位置的元素
 切片：获取数组元素子集的过程
 '''
 import numpy as np
+
 # 一维数组
 a = np.array([11, 22, 33, 44, 55])
 print(a[2])
+s = slice(1, 4, 2) # 索引2 到索引4停止
+print(a[s])
 print(a[1:4:2]) # 同python列表 start end(not include) step
 
 # 多维数组
@@ -175,33 +315,101 @@ print(a[-1, -2, -3])
 print(a[:, 1, -3]) # 第一个维度全选 第二个维度取索引为1的元素 第三个维度选索引为-3的元素
 print(a[:, 1:3, :])
 print(a[:, :, ::2])
+print(a[..., ::2]) # 有...代表全选前面所有维度 ：只能全选一个维度 ...可以全选所有维度
+
+print('-----------------------------')
+print(a[0, ...])
+print(a[0, ..., :])
+print(a[0, :, :])
+```
+
+### 高级索引
+```python
+import numpy as np
+
+# 整数数组索引 使用一个数组访问另一个数组元素
+x = np.array([[1, 2], [3, 4], [5, 6]])
+y = x[[0, 1, 2], [0, 1, 0]] # 第一个维度的索引[0, 1, 2] 第二个维度的索引[0, 1, 0]
+print(y)
+
+x = np.array([[0, 1, 2], [3, 4, 5], [6, 7, 8], [9, 10, 11]])
+print(f'数组是:\n{x}')
+rows = [[0, 0], [3, 3]]
+cols = [[0, 2], [0, 2]]
+print(f'四个角的元素为:\n{x[rows, cols]}')
+
+a = np.array([[0, 1, 2], [3, 4, 5], [6, 7, 8]])
+b = a[1:3, 1:3]
+c = a[1:3, [1,2]]
+d = a[...,1:]
+print(b)
+print(c)
+print(d)
+
+# 布尔索引 通过布尔运算获取符合指定条件的元素的数组
+x = np.array([[0, 1, 2], [3, 4, 5], [6, 7, 8], [9, 10, 11]])
+print(x[x > 5])
+a = np.array([np.nan, 1, 2, np.nan, 3, 4, 5]) # nan 非数字元素
+print(a[~np.isnan(a)]) # isnan检测数组的非数字元素 ~取补运算符
+a = np.array([1, 2+6j, 2, 5J, 5])
+print(a[np.iscomplex(a)]) # iscomplex检测数组的复数元素
+
+# 花式索引 根据索引数组的值作为目标数组的某个轴的下标来取值
+x = np.arange(9)
+print(x)
+y = x[[0, 6]]
+print(y)
+print(y[0])
+print(y[1])
+
+# 二维数组
+x = np.arange(32).reshape((8,4))
+print(x)
+print(x[[4, 2, 1, 7]])
+print(x[[-4, -2, -1, -7]])
+"""
+np.ix_ 输入两个数组，产生笛卡尔积的映射关系
+e.g. A=(a,b) B=(0,1,2)
+A * B = {(a,0), (a,1), (a,2), (b,0), (b,1), (b,2)}
+B * A = {(0,a), (1,a), (2,a), (0,b), (1,b), (2,b)}
+"""
+x = np.arange(32).reshape((8,-1))
+print(x[np.ix_([1,5,7,2],[0,3,1,2])])
+```
+
+### 广播
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407231519075.png)
+```python
+import numpy as np
+
+a = np.array([1, 2, 3, 4])
+b = np.array([10, 20, 30, 40])
+c = a * b
+print(c)
+
+# 广播Broadcast 对不同形状的数组进行数值计算的方式
+a = np.array([[0, 0, 0], [10, 10, 10], [20, 20, 20], [30, 30, 30]])
+b = np.array([0, 1, 2])
+print(b.shape)
+print(a + b) # 将b延伸至与a维度大小相同
+
+# np.tile(a, reps) reps：对应的英文单词为repeats，list表示，reps表示对A的各个axis进行重复的次数
+bb = np.tile(b, (4, 1))
+print(bb)
+print(a + bb)
+"""
+广播触发机制 两个数组a b 
+两个矩阵在一个维度上数据宽度相同 但在另一个维度上数据宽度不同
+并且形状小的矩阵 在数据宽度不同的的这一维度只有一个元素
+e.g.a.shape=(4,3)而b.shape=(1,3)，两个矩阵axis=1的数据宽度是相同的，但是axis=0的数据宽度不一样，
+并且b.shape[0]=1，这就是广播机制的触发条件，numpy会把b沿axis=0的方向复制4份，即形状变成(4, 3)，与a的一致，接下来就是对应位相加即可
+"""
 ```
 
 ### ndarray数组的运算
 ![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407221446226.png)
 ![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407221447426.png)
 ![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407221455310.png)
-```python
-import numpy as np
-a = np.arange(24).reshape((2, 3, 4))
-print(a)
-
-# 数组与标量之间的运算作用于数组的每一个元素
-a.mean()
-a = a / a.mean()
-print(a)
-
-a = np.arange(24).reshape((2, 3, 4))
-print(f"平方运算:{np.square(a)}")
-print(f"开方运算：{np.sqrt(a)}")
-print(f"整数小数分离{np.modf(np.sqrt(a))}") # np.modf()将整数和小数部分分成两个部分
-
-b = np.sqrt(a)
-print(a)
-print(b)
-print(np.maximum(a, b)) # 输出结果浮点数
-print(a > b)
-```
 
 ### 数据的CSV文件存取
 ```python

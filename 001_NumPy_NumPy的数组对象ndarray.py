@@ -1,18 +1,16 @@
 import numpy as np
-a = np.array([[0, 1, 2, 3, 4], [9, 8, 7, 6, 5]])
-# ndarray五种属性
-print(a.ndim)
-print(a.shape)
-print(a.size)
-print(a.dtype)
-print(a.itemsize)
-
-# 可以由非同质对象构成(在numpy2.0.0版本中不支持 回退1.23.0版本才可以实现)
-# 非同质ndarray对象无法发挥numpy优势 应避免书写
-# x = np.array([[0, 1, 2, 3, 4], [5, 6, 7, 8]])
-# print(x) 
-# print(x.shape) # (2, )
-# print(x.size) # 2
-# # 元素为对象类型
-# print(x.dtype) # ('0')
-# print(x.itemsize) # 4
+# x = np.array(list/tuple, dtype='int32', ndmin) 可以指定数据类型
+# 从列表
+x = np.array([0, 1, 2, 3], dtype=np.float64)
+print(x)
+x = np.array([1, 2, 3], dtype=complex)
+print(x)
+# 从元组
+x = np.array((0, 1, 2, 3))
+print(x)
+# 从列表和元组混合类型创建
+x = np.array(([0, 1], [1, 2], [2, 3], [3, 4]))
+print(x)
+# ndmin 指定生成数组的最小维度
+x = np.array([1, 2, 3, 4, 5], ndmin=2)
+print(x)
