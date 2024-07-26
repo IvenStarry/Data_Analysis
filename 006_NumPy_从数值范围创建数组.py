@@ -24,5 +24,3 @@ print(b)
 # np.logspace(s, s, num, endpoint, base=10.0, dtype) base log的对数
 a = np.logspace(1.0, 2.0, 10)
 print(a)
-
-

@@ -206,13 +206,11 @@ print(np.unique(a, return_inverse=True))
 print(np.unique(a, return_counts=True))
 
 
-# # .flatten() 数组降维，返回折叠后的一维数组，原数组不变
-# c = a.flatten()
-# print(c)
-# # .astype(new_type) 转化数据类型 创建新数组
-# print(a)
-# x = a.astype(np.float64)
-# print(x)
-# # .tolist() ndarray数组向列表转换
-# x = a.tolist()
-# print(x)
+# .astype(new_type) 转化数据类型 创建新数组
+print(a)
+x = a.astype(np.float64)
+print(x)
+
+# .tolist() ndarray数组向列表转换
+x = a.tolist()
+print(type(x))

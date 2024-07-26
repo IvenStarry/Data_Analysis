@@ -1,49 +1,60 @@
 # Python数据分析与展示
-Github：https://github.com/IvenStarry  
-学习视频网站：中国大学MOOC北京理工大学嵩天教授 https://www.icourse163.org/course/BIT-1001870002?tid=1472922453  
+**Github**：https://github.com/IvenStarry  
+**学习视频网站**：  
+中国大学MOOC北京理工大学嵩天教授 https://www.icourse163.org/course/BIT-1001870002?tid=1472922453  
 菜鸟网 https://www.runoob.com/
 
 ## NumPy
 ### 数据的维度
-维度是一组数据的组织形式
-一维数据有对等关系的有序或无序数据构成，采用线性方式组织
+**维度**是一组数据的组织形式
 
-列表和数组区别
-列表：数据类型可以不同
-数组：数据类型相同
+**列表和数组区别**
+|数据结构|特点|
+|:---:|:---:|
+|列表|数据类型可以不同|
+|数组|数据类型相同|
+|||
 
-二维数据由多个一维数据构成，是一维数据的组合形式（表格）
-多维数据由一维或二维数据在新维度上扩展得来
-高维数据仅利用最近本的二元关系展示数据间的复杂结构（字典）
+**不同维度数据的组成**
+|维度|概念|
+|:---:|:---:|
+|一维数据|由对等关系的有序或无序数据构成，采用线性方式组织|
+|二维数据|由多个一维数据构成，是一维数据的组合形式（表格）|
+|多维数据|由一维或二维数据在新维度上扩展得来|
+|高维数据|仅利用最近的二元关系展示数据间的复杂结构（字典）|
+|||
 
-数据维度的Python表示
-一维数据：列表和集合
-二维数据：列表
-多维数据：列表
-高维数据：字典或数据表示格式（JSON、XML、YAML）
+**数据维度的Python表示**
+|维度|在Python的表示|
+|:---:|:---:|
+|一维数据|列表和集合|
+|二维数据|列表|
+|多维数据|列表|
+|高维数据|字典或数据表示格式（JSON、XML、YAML）|
+|||
 
 ### NumPy的数组对象ndarray
-NumPy是一个开源的Python科学计算基础库
-有一个强大的N维数组对象ndarray
-广播功能函数
-整合C/C++/Fortran代码的工具
-线性代数、傅里叶变换、随机数生成等功能
-是SciPy、Pandas等数据处理或科学计算库的基础
+**NumPy**
+1. 是一个开源的Python科学计算基础库  
+2. 有一个强大的N维数组对象ndarray  
+3. 广播功能函数  
+4. 整合C/C++/Fortran代码的工具  
+5. 线性代数、傅里叶变换、随机数生成等功能  
+6. 是SciPy、Pandas等数据处理或科学计算库的基础  
 
-N维数组对象ndarray
-数组对象可以去掉元素间运算所需的循环，使一维向量更像单个数据
-设置专门的数组对象，提升运算速度（底层代码由C语言编写）
-采用相同的数据类型，助于节省运算和存储空间
-ndarray是一个多维数组对象，由两部分构成：实际的数据，描述这些数据的元数据（数据维度、数据类型）
-一般要求所有元素类型相同，数组下标从0开始
+**N维数组对象ndarray**
+1. 数组对象可以去掉元素间运算所需的循环，使一维向量更像单个数据
+2. 设置专门的数组对象，提升运算速度（底层代码由C语言编写）  
+采用相同的数据类型，助于节省运算和存储空间  
+3. ndarray是一个多维数组对象，由两部分构成：实际的数据，描述这些数据的元数据（数据维度、数据类型）  
+4. 一般要求所有元素类型相同，数组下标从0开始
 
-np.array()生成一个ndarray数组 输出成[]形式，元素用空格分割
-轴(axis):保存数据的维度 秩:轴的数量
-
+**np.array**生成一个ndarray数组 输出成[]形式，元素用空格分割  
+**轴**(axis):保存数据的维度 **秩**:轴的数量
 ![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407211328315.png)
 ![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407211329907.png)
 ![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407211329850.png)
-python仅支持整数、浮点数和复数3种类型
+python仅支持**整数**、**浮点数**和**复数**3种类型   
 科学计算设计数据较多，对存储和性能有较高要求，对元素类型精确定义有助于NumPy合理使用存储空间并优化性能，也有助于程序员对程序规模合理评估
 ```python
 import numpy as np
@@ -649,16 +660,14 @@ print(np.unique(a, return_inverse=True))
 print(np.unique(a, return_counts=True))
 
 
-# # .flatten() 数组降维，返回折叠后的一维数组，原数组不变
-# c = a.flatten()
-# print(c)
-# # .astype(new_type) 转化数据类型 创建新数组
-# print(a)
-# x = a.astype(np.float64)
-# print(x)
-# # .tolist() ndarray数组向列表转换
-# x = a.tolist()
-# print(x)
+# .astype(new_type) 转化数据类型 创建新数组
+print(a)
+x = a.astype(np.float64)
+print(x)
+
+# .tolist() ndarray数组向列表转换
+x = a.tolist()
+print(type(x))
 ```
 
 ### 位运算
@@ -701,100 +710,279 @@ print('Right shift', np.right_shift(10, 1)) # 01010 -> 00101
 ''' 
 ```
 
-### ndarray数组的运算
+### 字符串函数
+```python
+import numpy as np
+
+# char.add() 两个数组的字符串连接
+print(np.char.add('hello', 'world'))
+print(np.char.add(['hello', 'hi'], ['world', 'nihao~']))
+
+# char.multiply(a, num) 执行多重连接 num重复次数
+print(np.char.multiply('Iven', 5))
+
+# char.center(str, width, fillchar) 将字符串居中，指定字符在左侧和右侧进行填充 width:填充后整体长度 fillchar:填充字符
+print(np.char.center('Iven', 10, fillchar='*'))
+
+# char.capitalize() 将字符串的第一个字母转换大写
+print(np.char.capitalize('rosennn'))
+
+# char.title() 对数组的每个单词的第一个字母转为大写
+print(np.char.title('rosenn enjoys surfing'))
+
+# char.lower() 对数组的每个元素转换小写，对每个元素调用str.lower
+print(np.char.lower('IVEN'))
+
+# char.upper() 对数组的每个元素转换大写，对每个元素调用str.upper
+print(np.char.upper(['iven', 'rosenn']))
+
+# char.split(str, sep) 指定分隔符对字符串进行分割，返回数组 默认分隔符是空格
+print(np.char.split('i like coding'))
+print(np.char.split('www.github.com'), sep='.')
+
+# char.splitlines() 以换行符作为分隔符来分割字符串，返回数组  \r\n都可以作为换行符
+print(np.char.splitlines('Iven\nlikes it'))
+print(np.char.splitlines('Iven\rlikes it'))
+
+# char.strip() 移除开头或结尾的特定字符
+print(np.char.strip('abbbbacc', 'a'))
+
+# char.join() 通过指定分隔符来连接数组中的元素或字符串
+print(np.char.join([':', '-'], ['Iven', 'Starry']))
+
+# char.replace(str, old, new) 使用新字符串替换字符串的所有子字符串
+print(np.char.replace('i like coffee', 'ff', 'fffff'))
+
+# char.encode() 对数组中每个元素都调用str.encode函数进行编码,默认编码UTF-8
+print(np.char.encode('Iven','cp500')) # cp500是编码类型
+print(np.char.encode('Iven','ascii')) # ascii是编码类型
+print(np.char.encode('Iven'))         # 默认是uft-8编码
+
+# char.decode() 对编码元素进行str.decode()解码
+# char.encode() 对数组中每个元素都调用str.encode函数,默认编码UTF-8
+a = np.char.encode('Iven','cp500')
+b = np.char.encode('Iven','ascii')
+c = np.char.encode('Iven')
+print(np.char.decode(a,'cp500')) # cp500是编码类型
+print(np.char.decode(b,'ascii')) # ascii是编码类型
+print(np.char.decode(c))         # 默认是uft-8编码
+
+```
+
+### 数学函数
 ![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407221446226.png)
 ![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407221447426.png)
 ![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407221455310.png)
-
-### 数据的CSV文件存取
 ```python
-'''
-CSV文件：逗号分隔值文件
-np.savetxt(frame, array, fmt='%.18e', delimiter=None)
-frame:文件、字符串或产生器 可以是.gz .bz2的压缩文件
-array:存入文件的数组
-fmt:存入文件的格式 %d %.2f %.18e
-delimiter:分割字符串。默认为任何空格
-'''
-# 整数保存
-import numpy as np
-a = np.arange(100).reshape(5, 20)
-np.savetxt('related_data/test1.csv', a, fmt='%d', delimiter=',')
-# 浮点数保存
-a = np.arange(100).reshape(5, 20)
-np.savetxt('related_data/test2.csv', a, fmt='%.1f', delimiter=',')
-
-'''
-np.loadtxt(frame, dtype=np.float, delimiter=None, unpack=False)
-frame:文件、字符串或产生器 可以是.gz .bz2的压缩文件
-dtype:数据类型可选
-delimiter:分割字符串。默认为任何空格
-unpack:若为True，读入属性将分别写入不同变量
-'''
-# 默认浮点型
-b = np.loadtxt('related_data/test1.csv', delimiter=',')
-print(b)
-# 指定整数型
-# * 新版numpy无int类型 使用int_
-b = np.loadtxt('related_data/test1.csv', dtype=np.int_, delimiter=',')
-print(b)
-
-# csv只能有效存储一维和二维数组即load/save函数只能存取一维和二维数组
-```
-
-### 多维数据的存取
-```python
-'''
-a.tofile(frame, sep='', format='%s')
-frame: 文件、字符串
-sep: 数据分割字符串 如果为空串 写入文件为二进制
-format: 写入数据格式
-'''
 import numpy as np
 
-a= np.arange(100).reshape(5, 10, 2)
-# 只是逐项输出数据 看不出维度信息
-a.tofile("related_data/test1.dat", sep=',', format='%d')
-# 存储为二进制文件 占用空间更小 如果可以知道显示字符的编码以及字节之间的关系就可以实现转化
-a.tofile("related_data/test2.dat", format='%d')
+# sin cos  tan arccos arcsin arctan
+a = np.array([0, 30, 45, 60, 90])
+print(np.sin(a * np.pi / 180))
+print(np.cos(a * np.pi / 180))
+print(np.tan(a * np.pi / 180))
+# np.degrees(将弧度转换为角度)
+print(np.degrees(np.arcsin(np.sin(a * np.pi / 180)))) 
+print(np.degrees(np.arccos(np.cos(a * np.pi / 180))))
+print(np.degrees(np.arctan(np.tan(a * np.pi / 180))))
 
-'''
-np.fromfile(frame, dtype=float, count=-1, sep='')
-frame:文件、字符串
-dtype:读取的数据类型
-count:读入元素个数,-1表示读入全部文件
-sep: 数据分割字符串 如果为空串 写入文件为二进制
+# around(a, decimals) 返回四舍五入值 decimals:舍入的位数 默认0  如果为负数，整数将四舍五入到小数点左侧的位置
+a = np.array([1.0, 5.55, 123, 0.567, 25.532])
+print(a)
+print(np.around(a))
+print(np.around(a, decimals=1))
+print(np.around(a, decimals=-1))
+print(np.around(a, decimals=-2))
 
-读取时需要知道存入文件时数组的维度和元素类型
-可以通过再写一个元数组文件存储维度和元素类型信息
-'''
-# 文本文件
-b = np.fromfile('related_data/test1.dat', dtype=np.int_, sep=',')
-print(b)
-b = np.fromfile('related_data/test1.dat', dtype=np.int_, sep=',').reshape(5, 10, 2)
-print(b)
-
-# 二进制文件 无需指定分隔符
-c = np.fromfile("related_data/test2.dat", dtype=np.int_).reshape(5, 10 ,2)
-print(c)
-
-'''
-NumPy便捷文件存取 固定文件格式
-正常文件：np.save(fname, array)   压缩：np.savez(fname, array)
-fname: 文件名 以.npy为扩展名 压缩扩展名为.npz
-array: 数组变量
-
-np.load(fname)
-fname: 文件名 以.npy为扩展名 压缩扩展名为.npz
-
-可以直接还原数组维度和元素类型信息
-因为在文件开头用显示的方式 将数组的源信息存储在了第一行
-'''
-np.save("related_data/test1.npy", a)
-d = np.load("related_data/test1.npy")
+# floor 返回小于或等于表达式的最大整数 向下取整
+# ceil  返回大于或等于表达式的最小整数 向上取整
+a = np.array([-1.7, 1.5, -0.2, 0.6, 10])
+print(np.floor(a))
+print(np.ceil(a))
 ```
 
-### NumPy的随机数函数
+### 算术函数
+```python
+import numpy as np
+
+# 加减乘除 add subtract multiply divide
+a = np.arange(9, dtype=np.float64).reshape(3, 3)
+b = np.array([10, 10, 10])
+print(np.add(a, b))
+print(np.subtract(a, b))
+print(np.multiply(a, b))
+print(np.divide(a, b))
+
+# reciprocal() 返回参数各元素的倒数
+a = np.array([0.25, 1.33, 1, 100])
+print(a)
+print(np.reciprocal(a))
+
+# power() 将第一个输入数组中的元素作为底数，计算它与第二个输入数组中相应元素的幂 x^n
+a = np.array([10, 100, 1000])
+print(a)
+print(np.power(a, 2))
+b = np.array([1, 2, 3])
+print(np.power(a, b))
+
+# np.mod np.remainder 计算输入数组中相应元素的相除后的余数 
+a = np.array([10, 20, 30])
+b = np.array([3, 5, 7])
+print(np.mod(a, b))
+print(np.remainder(a, b))
+
+
+a = np.arange(24).reshape((2, 3, 4))
+print(f"平方运算:{np.square(a)}")
+print(f"开方运算：{np.sqrt(a)}")
+print(f"整数小数分离{np.modf(np.sqrt(a))}") # np.modf()将整数和小数部分分成两个部分
+
+b = np.sqrt(a)
+print(a)
+print(b)
+print(np.maximum(a, b)) # 输出结果浮点数
+print(a > b)
+```
+
+### 统计函数
+```python
+import numpy as np
+
+print('--------------amin amax----------------')
+# amin amax 沿指定轴找最大最小值
+'''
+amin amax(a, axis=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)
+axis：在哪个轴上计算最大最小值
+out：指定结果存储位置
+keepdims：True将保持结果数组的维度数目与输入数组相同 False 去除计算后维度为1的轴
+initial：指定一个初始值，然后在数组的元素上计算最大最小值
+where：布尔数组 指定只考虑只满足条件的数组
+'''
+a = np.array([[3, 7, 5],[8, 4, 3], [2, 4, 9]])
+print(np.amin(a))
+print(np.amin(a, 1))
+print(np.amin(a, 0))
+print(np.amax(a))
+print(np.amax(a, 1))
+print(np.amax(a, 0))
+
+print('--------------ptp----------------')
+# ptp(a) a中元素最大值和最小值之差 参数选择同上
+print(np.ptp(a))
+print(np.ptp(a, axis=1))
+print(np.ptp(a, axis=0))
+
+print('--------------percentile----------------')
+# percentile(a, q, axis) 表示小于这个值的观察值的百分比 q计算的百分位数0-100 该值=(最大值-最小值)*p + 最小值
+print(np.percentile(a, 50))
+print(np.percentile(a, 50, axis=1))
+print(np.percentile(a, 50, axis=0))
+print(np.percentile(a, 50, axis=0, keepdims=True))
+
+print('--------------median----------------')
+# median(a) 元素中位数
+print(np.median(a))
+print(np.median(a, axis=0))
+print(np.median(a, axis=1))
+
+print('--------------mean----------------')
+# mean(a, axis=None) 计算数组a的axis轴所有元素期望 默认全部轴
+print(np.mean(a))
+print(np.mean(a, axis=0))
+print(np.mean(a, axis=1))
+
+print('--------------average----------------')
+# average(a, axis=None, weights=None, returned=False) 计算数组a的axis轴所有元素加权平均值 默认全部轴  若为True同时返回加权平均值和权重综合
+print(np.average(a, axis=0, weights=[10, 5, 1]))
+print(np.average(a, axis=0, weights=[10, 5, 1], returned=True))
+
+print('--------------std----------------')
+# std(a, axis=None) 计算数组a的axis轴所有元素标准差 默认全部轴
+# std = sqrt(mean((x - x.mean()) ** 2))
+print(np.std(a))
+
+print('--------------var----------------')
+# var(a, axis=None) 计算数组a的axis轴所有元素方差 默认全部轴
+print(np.var(a))
+
+print('--------------sum----------------')
+# sum(a, axis=None) 计算数组a的axis轴所有元素之和 默认全部轴
+print(np.sum(a))
+
+print('--------------min max----------------')
+# min(a) max(a) 最小值最大值
+print(np.min(a), np.max(a))
+```
+
+### 排序与条件筛选函数
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407261734838.png)
+```python
+import numpy as np
+
+# sort(a, axis, kind, order) 返回输入数组的排序副本 kind 默认快速排序 order如果数组包含字段则是要排序的字段
+a = np.array([[3, 7], [9, 1]])
+print(a)
+print(np.sort(a))
+print(np.sort(a, axis=0))
+# msort(a) 数组第一个轴排序 等于sort(a, axis=0) numpy2.0被删除
+# // print(np.msort(a))
+
+dt = np.dtype([('name', 'S10'), ('age', int)])
+a = np.array([('Iven', 22), ('Rosenn', 21), ('bob', 23), ('starry', 19)], dtype=dt)
+print(a)
+print(np.sort(a, order='name')) # 注意大小写ascii码不同
+
+# argsort 返回数组值从小到大的索引值
+a = np.array([3, 1, 2])
+print(a)
+print(np.argsort(a))
+print(a[np.argsort(a)]) # 重构原数组
+for i in np.argsort(a) :
+    print(a[i], end=' ') # 循环重构原数组
+print('\n')
+
+# lexsort 对多个序列进行排序 优先排靠后的一列 在这里即a 排完a相同再排b
+a = np.array(['Iven', 'Rosenn', 'Iven', 'starry'])
+b = ('s', 's', 'f', 'f')
+ind = np.lexsort((b, a))
+print(ind)
+print([a[i] + ', ' + b[i] for i in ind])
+
+# sort_complex 复数排序 现排实部后虚部 从小到大
+a = np.array([1+2j, 1-2j, 1, 2+1j, 1+3j])
+print(np.sort_complex(a))
+
+# partition(a, kth[, axis, kind, order]) 指定一个数，对数组进行分区
+a = np.array([232, 564, 278, 3, 2, 1, -1, -10, -30, -40])
+print(np.partition(a, 4)) # 指定排序后的数组索引为3的数 比这个数小的排这个数前 比这个数大的排后面
+print(np.partition(a, (1, 3))) # 小于1(-30)在前面，大于3(-1)的在后面，1和3之间的在中间，顺序无所谓
+
+# argmin(a) argmax(a) 默认求a中元素最小值、最大值的降到一维后下标 指定axis求在该轴的下标索引
+a = np.array([[3, 7], [9, 1]])
+print(np.argmin(a), np.argmax(a))
+print(np.argmin(a, axis=0), np.argmin(a, axis=1), np.argmax(a, axis=0), np.argmax(a, axis=1))
+
+# nonzero() 返回输入数组中非零元素的索引
+a = np.array([[30, 40 ,0], [0, 20, 10], [50, 0, 60]])
+print(np.nonzero(a))
+
+# where() 返回输入数组中满足给定条件的元素索引
+a = np.arange(9.).reshape(3, 3)
+print(a)
+print(np.where(a > 3)) # 返回索引
+print(a[np.where(a > 3)]) # 利用索引获取元素
+
+# extract() 根据某个条件从数组中抽取元素，返回满条件的元素
+condition = np.mod(a, 2) == 0
+print(condition)
+print(np.extract(condition, a))
+
+# unravel_index(index, shape) 根据shape将一维下标index转多维下标
+print(np.unravel_index(np.argmax(a), a.shape))
+
+```
+
+### 随机数函数
 ```python
 import numpy as np
 # rand() 随机数数组 浮点数 符合均匀分布 [0, 1)
@@ -839,48 +1027,7 @@ print(np.random.normal(10, 5, (3, 4)))
 print(np.random.poisson(0.5, (3, 4)))
 ```
 
-### NumPy的统计函数
-```python
-import numpy as np
-
-a = np.arange(15).reshape(3, 5)
-print(a)
-
-# sum(a, axis=None) 计算数组a的axis轴所有元素之和 默认全部轴
-print(np.sum(a))
-
-# mean(a, axis=None) 计算数组a的axis轴所有元素期望 默认全部轴
-print(np.mean(a, axis=0))
-print(np.mean(a, axis=1))
-
-# average(a, axis=None, weights=None) 计算数组a的axis轴所有元素加权平均值 默认全部轴
-print(np.average(a, axis=0, weights=[10, 5, 1]))
-
-# std(a, axis=None) 计算数组a的axis轴所有元素标准差 默认全部轴
-print(np.std(a))
-
-# var(a, axis=None) 计算数组a的axis轴所有元素方差 默认全部轴
-print(np.var(a))
-
-a = np.arange(15, 0, -1).reshape(3, 5)
-
-# min(a) max(a) 最小值最大值
-print(np.min(a), np.max(a))
-
-# argmin(a) argmax(a) a中元素最小值、最大值的降到一维后下标
-print(np.argmin(a), np.argmax(a))
-
-# unravel_index(index, shape) 根据shape将一维下标index转多维下标
-print(np.unravel_index(np.argmin(a), a.shape))
-
-# ptp(a) a中元素最大值和最小值之差
-print(np.ptp(a))
-
-# median(a) 元素中位数
-print(np.median(a))
-```
-
-### NumPy的梯度函数
+### 梯度函数
 ```python
 import numpy as np
 '''
@@ -897,6 +1044,315 @@ print(np.gradient(a))
 b = np.random.randint(0, 50, (3, 5))
 print(b)
 print(np.gradient(b))
+```
+
+### 字节交换
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407262349034.png)
+```python
+import numpy as np
+
+# np.adarray.byteswap() 将ndarray每个元素的字节进行大小端转换
+a = np.array([1, 245, 8755], dtype=np.int16)
+print(a)
+print(list(map(hex, a))) # hex 16进制编码
+print(a.byteswap(inplace=True)) # 传入True原地交换
+print(list(map(hex, a))) 
+'''
+大端模式
+1：0000 0000 0000 0001 
+245：0000 0000 1111 0101  
+8755：0010 0010 0011 0011
+
+小端模式
+1：0000 0001 0000 0000 
+245：(首1补码)1111 0101 0000 0000 (转原码表示)1000 1011 0000 0000  
+8755：0011 0011 0010 0010
+'''
+```
+
+### 副本和视图
+|类型|id是否相同|修改新数据，原数据是否变化|
+|:---:|:---:|:---:|
+|赋值|相同|变化|
+|view 创建新的数组对象|不同|不变|
+|切片|不同|变化|
+|copy副本|不同|不变|
+```python
+import numpy as np
+
+'''
+副本：数据的完整的拷贝。对拷贝修改不影响原数据，物理内存不在一起
+视图：数据的别称或引用，通过这个别称或者引用即可访问、操作，不产生拷贝，修改视图影响原数据，物理内存在同一位置
+
+副本发生在：
+1.python序列的切片操作，调用deepcopy()函数
+2.调用ndarray.copy()
+
+视图发生在：
+1.numpy切片操作返回原数据的视图
+2.调用ndarray.view()
+'''
+
+print('-----------------------------------------')
+# 赋值不创建副本 id相同，修改赋值对象，也会修改原数据
+a = np.arange(6)
+print(a)
+print(id(a)) # id() 返回对象的“标识值”。该值是一个整数，在此对象的生命周期中保证是唯一且恒定的,类似于指针
+b = a
+print(b)
+print(id(b))
+b.shape = 3,2
+print(b)
+print(a)
+
+print('-----------------------------------------')
+# 视图或浅拷贝
+# view 创建新的数组对象 id不同，修改新的数组对象，不修改原数据
+a = np.arange(6).reshape(3, 2)
+print(a)
+b = a.view() # view() 创建一个新的数组对象。维度变化并不改变原始数据的维度
+print(b)
+print(id(a))
+print(id(b))
+b.shape = 2,3
+print(b) # 修改b形状 并不修改a
+print(a)
+
+print('-----------------------------------------')
+# 切片仍是原数据的视图 id不同 视图指向原数据，修改切片原数据也修改
+arr = np.arange(12)
+print(a)
+a = arr[3:]
+b = arr[3:]
+a[1] = 123
+b[2] = 234
+print(arr) # 切片创建视图 修改数据会影响到原始数组
+print(id(a), id(b), id(arr[3:]))
+# a, b 都是arr的一小部分视图。对视图的修改直接反映到原数据中，但ab的id不同，视图虽然指向原数据，但与赋值引用有区别
+
+print('-----------------------------------------')
+# 副本或深拷贝 id不同 修改拷贝原数据不修改
+a = np.array([[10, 10], [2, 3], [4, 5]])
+print(a)
+b = a.copy() # copy函数创建一个副本，副本修改不影响原始数据，物理内存不在同一位置
+print(b)
+print(id(a), id(b))
+b[0, 0] = 1
+print(a)
+print(b)
+```
+
+### 矩阵库
+```python
+import numpy.matlib
+import numpy as np
+# numpy包含矩阵库numpy.matlib，模块返回一个矩阵，而非ndarray对象
+
+# 转置矩阵
+a = np.arange(12).reshape(3, 4)
+print(a)
+print(a.T)
+print(type(a), type(a.T))
+
+# matlib.empty 返回一个新的矩阵
+a = numpy.matlib.empty((2, 2))
+print(a)
+print(type(a))
+
+# matlib.zeros 返回全0矩阵
+a = numpy.matlib.zeros((2, 2))
+print(a)
+
+# matlib.ones 创建全1矩阵
+a = numpy.matlib.ones((2, 2))
+print(a)
+
+# matlib.eye(row, col, k, dtype) 创建对角线为1其他位置为0的矩阵  k:对角线的索引
+a = numpy.matlib.eye(3, 3, k=0, dtype=float)
+print(a)
+a = numpy.matlib.eye(3, 3, k=1, dtype=float)
+print(a)
+
+# matlib.identity() 返回给定大小的单位矩阵
+a = numpy.matlib.identity(3, dtype=float)
+print(a)
+
+# matlib.rand 随机数矩阵
+a = numpy.matlib.rand(3, 3)
+print(a)
+
+# 矩阵总是二维的，而ndarray是一个n维数组，二者可以互换
+a = np.matrix('1, 2; 3, 4')
+print(a, type(a))
+b = np.asarray(a) # asarray：矩阵转ndarray
+print(b, type(b))
+c = np.asmatrix(b) # asmatrix：adarray转矩阵
+print(c, type(c))
+```
+
+### 线性代数
+```python
+import numpy as np
+
+# numpy提供线性代数函数库linalg
+print('-----------------dot----------------------')
+# dot() 矩阵点积
+a = np.array([[1, 2], [3, 4]])
+b = np.array([[11, 12], [13, 14]])
+print(np.dot(a, b))
+# [[1*11+2*13, 1*12+2*14],[3*11+4*13, 3*12+4*14]]
+
+print('-----------------vdot----------------------')
+# vdot 向量点积 将输入参数平摊为一维向量
+print(np.vdot(a, b))
+# 1*11 + 2*12 + 3*13 + 4*14 = 130
+
+print('-----------------inner----------------------')
+# inner 返回一维数组的向量内积 对于更高维度，返回最后一个轴上和的乘积
+print(np.inner(np.array([1, 2, 3]), np.array([0, 1, 0])))
+# 等价于 1*0+2*1+3*0
+a = np.array([[1, 2], [3, 4]])
+b = np.array([[11, 12], [13, 14]])
+print(np.inner(a, b))
+# 1*11+2*12, 1*13+2*14 
+# 3*11+4*12, 3*13+4*14
+
+print('-----------------matmul----------------------')
+# matmul 返回两个数组的矩阵乘积 
+# 二维数组就是矩阵乘法 
+a = [[1, 0], [0, 1]]
+b = [[4, 1], [2, 2]]
+print(np.matmul(a, b))
+# 若一个参数的维度为1维度，则通过在其维度加1提升为矩阵，运算后去除
+a = [[1, 0], [0, 1]]
+b = [1, 2]
+print(np.matmul(a, b))
+print(np.matmul(b, a))
+# 若任一参数维度大于2，则另一参数进行广播，输出多个矩阵
+a = np.arange(8).reshape(2, 2, 2)
+b = np.arange(4).reshape(2, 2)
+print(np.matmul(a, b))
+
+print('-----------------linalg.det----------------------')
+# linalg.det() 计算输入矩阵的行列式
+a = np.array([[1, 2], [3, 4]])
+print(np.linalg.det(a))
+
+print('-----------------linalg.solve、inv----------------------')
+# linalg.solve() 给出矩阵的线性方程解 linalg.inv()计算逆矩阵
+a = np.array([[1, 2], [3, 4]])
+b = np.linalg.inv(a)
+print(a, b)
+print(np.dot(a, b)) # AB=E
+
+# 计算AX=B的解 先求A的逆 X=A^(-1) B
+a = np.array([[1, 1, 1], [0, 2, 5], [2, 5, -1]])
+print(a)
+a_inv = np.linalg.inv(a)
+print(a_inv)
+b = np.array([[6], [-4], [27]])
+print(b)
+print('解方程AX=B')
+print(np.linalg.solve(a, b))
+print('计算:X = A^(-1) B:')
+print(np.dot(a_inv, b))
+```
+
+### IO
+```python
+'''
+CSV文件：逗号分隔值文件
+np.savetxt(frame, array, fmt='%.18e', delimiter=None)
+frame:文件、字符串或产生器 可以是.gz .bz2的压缩文件
+array:存入文件的数组
+fmt:存入文件的格式 %d %.2f %.18e
+delimiter:分割字符串。默认为任何空格
+'''
+# 整数保存
+import numpy as np
+a = np.arange(100).reshape(5, 20)
+np.savetxt('related_data/test1.csv', a, fmt='%d', delimiter=',')
+# 浮点数保存
+a = np.arange(100).reshape(5, 20)
+np.savetxt('related_data/test2.csv', a, fmt='%.1f', delimiter=',')
+
+'''
+np.loadtxt(frame, dtype=np.float, delimiter=None, unpack=False)
+frame:文件、字符串或产生器 可以是.gz .bz2的压缩文件
+dtype:数据类型可选
+delimiter:分割字符串。默认为任何空格
+unpack:若为True，读入属性将分别写入不同变量
+'''
+# 默认浮点型
+b = np.loadtxt('related_data/test1.csv', delimiter=',')
+print(b)
+# 指定整数型
+# * 新版numpy无int类型 使用int_
+b = np.loadtxt('related_data/test1.csv', dtype=np.int_, delimiter=',')
+print(b)
+
+# csv只能有效存储一维和二维数组即load/save函数只能存取一维和二维数组
+
+'''
+a.tofile(frame, sep='', format='%s')
+frame: 文件、字符串
+sep: 数据分割字符串 如果为空串 写入文件为二进制
+format: 写入数据格式
+'''
+import numpy as np
+
+a= np.arange(100).reshape(5, 10, 2)
+# 只是逐项输出数据 看不出维度信息
+a.tofile("related_data/test1.dat", sep=',', format='%d')
+# 存储为二进制文件 占用空间更小 如果可以知道显示字符的编码以及字节之间的关系就可以实现转化
+a.tofile("related_data/test2.dat", format='%d')
+
+'''
+np.fromfile(frame, dtype=float, count=-1, sep='')
+frame:文件、字符串
+dtype:读取的数据类型
+count:读入元素个数,-1表示读入全部文件
+sep: 数据分割字符串 如果为空串 写入文件为二进制
+
+读取时需要知道存入文件时数组的维度和元素类型
+可以通过再写一个元数组文件存储维度和元素类型信息
+'''
+# 文本文件
+b = np.fromfile('related_data/test1.dat', dtype=np.int_, sep=',')
+print(b)
+b = np.fromfile('related_data/test1.dat', dtype=np.int_, sep=',').reshape(5, 10, 2)
+print(b)
+
+# 二进制文件 无需指定分隔符
+c = np.fromfile("related_data/test2.dat", dtype=np.int_).reshape(5, 10 ,2)
+print(c)
+
+'''
+NumPy便捷文件存取 固定文件格式
+正常文件：np.save(fname, *args)   数组保存在npy文件
+压缩：np.savez(fname, *args, **kwds) 存储多个数组保存在npz扩展文件 
+
+fname: 文件名 以.npy为扩展名 压缩扩展名为.npz
+args: 保存的数组 
+kwds" 用关键字参数为数组起名，非关键字自动起名arr_0 arr_1
+
+np.load(fname)
+fname: 文件名 以.npy为扩展名 压缩扩展名为.npz
+
+可以直接还原数组维度和元素类型信息
+因为在文件开头用显示的方式 将数组的源信息存储在了第一行
+'''
+np.save("related_data/test1.npy", a)
+d = np.load("related_data/test1.npy")
+a = np.array([[1, 2, 3], [4, 5, 6]])
+b = np.arange(0, 1.0, 0.1)
+c = np.sin(b)
+np.savez('related_data/test.npz', a, b, sin_array=c)
+r = np.load('related_data/test.npz')
+print(r.files) # 查看数据名称
+print(r['arr_0'])
+print(r['arr_1'])
+print(r['sin_array'])
 ```
 
 ### 图像的数组表示
@@ -974,25 +1430,3 @@ b: np.ndarray = b.clip(0, 255)
 im = Image.fromarray(b.astype('uint8'))
 im.save('related_data/dog_hand_painting.jpg')
 ```
-
-## Matplotlib
-### Matplotlb库的介绍
-### pyplot的plot()函数
-### pyplot的中文显示
-### pyplot的文本显示
-### pyplot的子绘图区域
-### pyplot基础图表函数概述
-### pyplot饼图的绘制
-### pyplot直方图的绘制
-### pyplot极坐标的绘制
-### pyplot散点图的绘制
-### 实例分析_引力波的绘制
-## Pandas
-### Pandas库的Series类型
-### Pandas库的DataFrame类型
-### Pandas库的数据类型操作
-### Pandas库的数据类型运算
-### 数据的排序
-### 数据的基本统计分析
-### 数据的累计统计分析
-### 数据的相关分析
