@@ -1461,9 +1461,9 @@ x,y: 点或线的节点 x为x轴数据，y为y轴数据，数据可以是列表�
 fmt: 可选，定义基本格式（颜色、标记和线条样式等）
 **kwargs: 可选。用在二维平面图上，设置指定属性，如标签，线的宽度等
 
+标记字符：. 点标记  , 像素标记(极小点)  o 实心圈标记  v 倒三角标记  ^ 上三角标记  > 右三角标记  < 左三角标记等
 颜色字符：b m:洋红色 g y r k:黑色 w c '#0080000'RGB颜色符串  多条曲线不指定颜色，会自动选择不同颜色
 线型参数：- 实线  -- 破折线  -. 点划线  : 虚线
-标记字符：. 点标记  , 像素标记(极小点)  o 实心圈标记  v 倒三角标记  ^ 上三角标记  > 右三角标记  < 左三角标记等
 '''
 
 # 绘制(1, 3)到(8, 10)的线
@@ -1503,28 +1503,298 @@ plt.show()
 ```
 
 ### 绘图标记
+**坐标标记**
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407272212647.png)
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407272211444.png)
+**线类型标记、颜色标记、标记大小与颜色**
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407272235178.png)
 ```python
+import matplotlib.pyplot as plt
+import matplotlib.markers
+import numpy as np
 
+# 自定义标记 plot()方法的marker参数
+ypoints = np.array([1, 3, 4, 5, 8, 9, 6, 1, 3, 4, 5, 2, 4])
+plt.plot(ypoints, marker='o')
+plt.show()
+
+# marker定义的符号 具体见学习笔记
+plt.plot(ypoints, marker='*')
+plt.show()
+
+# 定义下箭头
+plt.plot([1, 2, 3], marker=matplotlib.markers.CARETDOWN)
+plt.show()
+plt.plot([1, 2, 3], marker=7) # 看表也可以用7
+plt.show()
+
+# fmt参数 定义了基本格式，如标记、线条样式和颜色
+# fmt = '[marker][line][color]'
+ypoints = np.array([6, 2, 13, 10])
+plt.plot(ypoints, 'o:r') # o实心圆标记 :虚线 r红色
+plt.show()
+
+# 标记大小与颜色
+'''
+markersize:        ms     标记的大小
+markerfacecolor:   mfc    定义标记内部的颜色
+markeredgecolor:   mec    定义标记边框的颜色
+'''
+ypoints = np.array([6, 2, 13, 10])
+plt.plot(ypoints, marker='o', ms=20, mfc='w', mec='r')
+plt.show()
+plt.plot(ypoints, marker='o', ms=10, mfc='#4CAF50', mec='#4CAF50') # 自定义颜色
+plt.show()
 ```
 
 ### 绘图线
+**线的类型**
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407272253884.png)
 ```python
+import matplotlib.pyplot as plt
+import numpy as np
 
+# 线的类型
+# linestyle 简写 ls
+ypoints = np.array([6, 2, 13, 10])
+plt.plot(ypoints, linestyle='dotted')
+plt.show()
+plt.plot(ypoints, ls='-.') # 简写
+plt.show()
+
+# 线的颜色
+# color 简写 c 同绘图标记颜色
+plt.plot(ypoints, color='r')
+plt.show()
+plt.plot(ypoints, c='#8FBC8F') # 简写
+plt.show()
+plt.plot(ypoints, c='SeaGreen') # 十六进制颜色名
+plt.show()
+
+# 线的宽度
+# linewidth 简写 lw  值可以是浮点数
+plt.plot(ypoints, linewidth='12.5')
+plt.show()
+
+# 多条线
+# plot()可以包含多对xy值 绘制多条线
+y1 = np.array([3, 7, 5, 9])
+y2 = np.array([6, 2, 13, 10])
+plt.plot(y1) # 未传入x 默认 0123
+plt.plot(y2)
+plt.show()
+x1 = np.array([0, 1, 2, 3])
+x2 = np.array([1, 2, 3, 4]) # 自定义坐标
+plt.plot(x1, y1, x2, y2)
+plt.show()
 ```
 
 ### 轴标签和标题
 ```python
+import matplotlib.pyplot as plt
+import matplotlib.font_manager
+import numpy as np
 
+# 设置xy轴的标签 xlabel() ylabel()
+x = np.array([1, 2, 3, 4])
+y = np.array([1, 4, 9, 16])
+plt.plot(x, y)
+plt.xlabel('x-label')
+plt.ylabel('y-label')
+plt.show()
+
+# 标签 title()
+plt.plot(x, y)
+plt.xlabel('x-label')
+plt.ylabel('y-label')
+plt.title('matplotlib test')
+plt.show()
+
+# 图形中文显示 fontproperties 可以使用系统的字体 这里使用思源黑体
+zhfont1 = matplotlib.font_manager.FontProperties(fname='related_data/SourceHanSansCN-Bold.otf')
+x = np.arange(1, 11)
+y = 2 * x + 5
+plt.plot(x, y)
+plt.xlabel('x轴', fontproperties=zhfont1)
+plt.ylabel('y轴', fontproperties=zhfont1)
+plt.title('matplotlib 练习', fontproperties=zhfont1)
+plt.show()
+
+# 自定义字体样式 fontdict 设置字体颜色大小
+zhfont1 = matplotlib.font_manager.FontProperties(fname='related_data/SourceHanSansCN-Bold.otf', size=18)
+font1 = {'color':'blue', 'size':20}
+font2 = {'color':'darkred', 'size':20}
+plt.title('matplotlib 练习', fontproperties=zhfont1, fontdict=font1)
+plt.plot(x, y)
+plt.xlabel('x轴', fontproperties=zhfont1)
+plt.ylabel('y轴', fontproperties=zhfont1)
+plt.show()
+
+# 标题与标签的定位
+'''
+title() 方法提供loc参数设置标题位置 可以设置为'left','right'和'center',默认center
+xlabel()方法提供loc参数设置x 轴位置 可以设置为'left','right'和'center',默认center
+ylabel()方法提供loc参数设置y 轴位置 可以设置为'bottom','top'和'center',默认center
+'''
+plt.title('matplotlib 练习', fontproperties=zhfont1, fontdict=font1, loc='right')
+plt.plot(x, y)
+plt.xlabel('x轴', fontproperties=zhfont1, loc='left')
+plt.ylabel('y轴', fontproperties=zhfont1, loc='bottom')
+plt.show()
 ```
 
 ### 网格线
 ```python
+import matplotlib.pyplot as plt
+import numpy as np
 
+# grid() 设置图表中的网格线
+'''
+plt.grid(b=None, which='major', axis='both', )
+b: 可选，默认None，可设置bool值，true显示网格线，false不显示，如果设置**kwargs参数，值为true
+which: 可选，可选值有'major'(默认),'minor','both' 表示应用更改的网格线
+axis: 可选，设置显示哪个方向的网格线，可选'both'(默认) 'x','y'，分别表示x轴y轴两个方向
+**kwargs: 可选，设置网格样式，可以是color='r',linestyle='-'和linewidth=2，分别表示网格线的颜色，样式和宽度
+'''
+x = np.array([1, 2, 3, 4])
+y = np.array([1, 4, 9, 16])
+# 网格线参数默认值
+plt.title('grid test')
+plt.xlabel('x-label')
+plt.ylabel('y-label')
+plt.plot(x, y)
+plt.grid()
+plt.show()
+
+# 网格线参数设置axis
+plt.title('grid test')
+plt.xlabel('x-label')
+plt.ylabel('y-label')
+plt.plot(x, y)
+plt.grid(axis='x') # 设置x轴方向显示网格线
+plt.show()
+
+# 设置网格线的样式 样式同绘图线类型标记，颜色标记，线宽度
+# grid(color='color', linestyle='linestyle', linewidth='linewidth')
+plt.title('grid test')
+plt.xlabel('x-label')
+plt.ylabel('y-label')
+plt.plot(x, y)
+plt.grid(color='r', linestyle='--', linewidth=0.5) # 设置x轴方向显示网格线
+plt.show()
 ```
 
 ### 绘制多图
 ```python
+import matplotlib.pyplot as plt
+import numpy as np
 
+# subplot subplots 绘制子图
+'''
+subplot() 绘图需要指定位置
+subplot(nrows, ncols, index, **kwargs)
+subplot(pos, **kwargs)
+subplot(**kwargs)
+subplot(ax)
+将绘图区域分为nrows行和ncols列，从左到右从上到下对每个子区域编号1...N，编号可以通过index来设置
+suptitle 设置多图的标题
+''' 
+# 一行二列多图
+xpoints = np.array([0, 6])
+ypoints = np.array([0, 100])
+plt.subplot(1, 2, 1)
+plt.plot(xpoints, ypoints)
+plt.title('plot 1')
+
+x = np.array([1, 2, 3, 4])
+y = np.array([1, 4, 9, 16])
+plt.subplot(1, 2, 2)
+plt.plot(x, y)
+plt.title('plot 2')
+
+plt.suptitle('subplot test')
+plt.show()
+
+# 二行二列多图
+xpoints = np.array([0, 6])
+ypoints = np.array([0, 100])
+plt.subplot(2, 2, 1)
+plt.plot(xpoints, ypoints)
+plt.title('plot 1')
+
+x = np.array([1, 2, 3, 4])
+y = np.array([1, 4, 9, 16])
+plt.subplot(2, 2, 2)
+plt.plot(x, y)
+plt.title('plot 2')
+
+x = np.array([1, 2, 3, 4])
+y = np.array([5, 16, 17, 8])
+plt.subplot(2, 2, 3)
+plt.plot(x, y)
+plt.title('plot 3')
+
+x = np.array([1, 2, 3, 4])
+y = np.array([10, 2, 23, 4])
+plt.subplot(2, 2, 4)
+plt.plot(x, y)
+plt.title('plot 4')
+
+plt.suptitle('subplot test')
+plt.show()
+
+'''
+subplots() 绘图一次生成多个，在调用时只需要调用生成对象的ax即可
+subplots(nrows=1, ncols=1, *, sharex=False, sharey=False, squeeze=True, 
+        subplt_kw=None, gridspec_kw=None, **fig_kw)
+nrows, ncols 设置图表的函数和列数
+sharex, sharey 设置xy轴是否共享属性，可设置none, all, row, col  当为false或none时每个子图的x轴和y轴是独立的
+squeeze: bool 默认True 表示额外的维度从返回的Axes(轴)对象中挤出，对于N*1或1*N个子图，返回一个1维数组，对于N*M，N>1和M>1返回一个二维数组，
+        如果设置False，则不进行挤压操作，返回一个元素为的Axes的2维，即使最终是1*1
+subplt_kw: 可选，字典 字典关键字传递给add_subplot()创建子图
+gridspec_kw: 可选，字典 字典关键字传递给GridSpec构造函数创建子图放在网格里grid
+**fig_kw: 把详细的关键字传给figure函数
+suptitle 设置多图的标题
+''' 
+x = np.linspace(0, 2*np.pi, 400)
+y = np.sin(x**2)
+
+# 创建一个图像和子图
+fig, ax = plt.subplots()
+ax.plot(x, y)
+ax.set_title('simple plot')
+
+# 创建2个子图
+f, (ax1, ax2) = plt.subplots(1, 2, sharey=True)
+ax1.plot(x, y)
+ax1.set_title('sharing y axis')
+ax2.scatter(x, y)
+
+# 创建4个子图
+fig, axs = plt.subplots(2, 2, subplot_kw=dict(projection='polar')) # 投影类型：极坐标图 通过subplot_kw传递给add_subplot中的projection参数
+axs[0, 0].plot(x, y)
+axs[1, 1].scatter(x, y)
+
+# 共享x轴
+plt.subplots(2, 2, sharex='col')
+
+# 共享y轴
+plt.subplots(2, 2, sharey='row')
+
+# 共享x和y轴 两种方法
+plt.subplots(2, 2, sharex='all', sharey='all')
+plt.subplots(2, 2, sharex=True, sharey=True)
+
+# 创建标识为10的图，已存在的则删除
+fig, ax = plt.subplots(num=10, clear=True)
+plt.show()
+
+'''
+总结：subplot和subplots的原理
+fig = plt.figure()  #首先调用plt.figure()创建了一个**画窗对象fig**
+ax = fig.add_subplot(111)  #然后再对fig创建默认的坐标区（一行一列一个坐标区）  笛卡尔坐标系
+#这里的（111）相当于（1，1，1），当然，官方有规定，当子区域不超过9个的时候，我们可以这样简写
+'''
 ```
 
 ### 散点图
