@@ -1798,41 +1798,491 @@ ax = fig.add_subplot(111)  #然后再对fig创建默认的坐标区（一行一�
 ```
 
 ### 散点图
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407281340363.png)
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407281341520.png)
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407281341062.png)
 ```python
+import matplotlib.pyplot as plt
+import numpy as np
 
+'''
+scatter(x, y, s=None, c=None, marker=None, camap=None, norm=None, vmin=None, vmax=None, alpha=None,
+        linewidths=None, *, edgecolors=None, plotnonfinite=False, data=None, **kwargs)
+x, y:长度相同的数组。数据点
+s:点的大小，默认20，也可以是数组，数组每个参数为对应点的大小
+c:点的颜色，默认蓝色，也可以是RGB或RGBA二维行数组
+marker:点的样式，默认o
+cmap:colormap 默认None，标量或是一个colormap的名字，只有c是一个浮点数数组时才使用，如果没有申明就是image.cmap
+norm:归一化 默认None，数据亮度在0-1之间，只有c是一个浮点数数组才使用
+vmin,vmax:亮度设置，在norm参数存在时会忽略
+alpha:透明度设置，0-1之间，默认None即不透明
+linewidth:标记点长度
+edgecolors:颜色或颜色序列，可选'face'(默认) 'none' None
+plotnonfinite:布尔值，设置是否使用非限定的c(inf,-inf或nan)绘制点
+**kwargs:其他参数
+'''
+
+x = np.array([1, 2, 3, 4, 5, 6, 7, 8])
+y = np.array([1, 4, 9 ,16, 7, 11, 23, 18])
+
+plt.scatter(x, y)
+plt.show()
+
+# 设置图标大小
+sizes = np.array([20, 50, 100, 200, 500, 1000, 60, 90])
+plt.scatter(x, y, s=sizes)
+plt.show()
+
+# 自定义点的颜色
+x = np.array([1, 2, 3, 4, 5, 6, 7, 8])
+y = np.array([1, 4, 9 ,16, 7, 11, 23, 18])
+plt.scatter(x, y, color='hotpink')
+x = np.array([1, 2, 3, 4, 5, 6, 7, 8])
+y = np.array([20, 12, 62, 12, 52, 67, 10, 5])
+plt.scatter(x, y, color='#88C999')
+plt.show()
+
+# 随机数设置散点图
+np.random.seed(19680801) # 随机数生成器种子
+N = 50
+x = np.random.rand(N)
+y = np.random.rand(N)
+colors = np.random.rand(N)
+area = (30 * np.random.rand(N)) ** 2
+plt.scatter(x, y, s=area, c=colors, alpha=0.5)
+plt.title('test')
+plt.show()
+
+# 颜色条colormap 像一个颜色列表，每种颜色有一个范围从0到100的值
+x = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
+y = np.array([1, 4, 9 ,16, 7, 11, 23, 18, 20, 2, 18])
+colors = np.array([0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+plt.scatter(x, y, c=colors, cmap='viridis') # cmap参数默认viridis
+plt.show()
+# 要显示颜色条，使用plt.colorbar()方法
+plt.scatter(x, y, c=colors, cmap='viridis')
+plt.colorbar()
+plt.show()
+# 换个颜色条参数 设置afmhot_r 带r即为颜色条翻转 参数选择见学习笔记
+plt.scatter(x, y, c=colors, cmap='afmhot')
+plt.colorbar()
+plt.show()
+plt.scatter(x, y, c=colors, cmap='afmhot_r')
+plt.colorbar()
+plt.show()
 ```
 
 ### 柱形图
 ```python
+import matplotlib.pyplot as plt
+import numpy as np
 
+'''
+bar(x, height, width=0.8, bottom=None, *, align='center', data=None, **kwargs)
+x: 浮点型数组，图形x轴数组
+height: 浮点型数组，柱形图高度
+width: 浮点型数组，柱形图宽度
+bottom: 浮点型数组，底座的y坐标，默认0
+align: 柱形图与x坐标的对齐方式,'center'以x位置为中心，这是默认值。'edge'将柱形图左边缘与x位置对齐。要对齐右边缘的条形，可以传递负数的宽度值及align='edge'
+**kwargs: 其他参数
+'''
+
+x = np.array(['test1', 'test2', 'test3', 'test4'])
+y = np.array([10, 20, 30, 40])
+plt.bar(x, y)
+plt.show()
+
+# 垂直方向的柱形图可以用barh()方法进行设置
+plt.barh(x, y)
+plt.show()
+
+# 设置柱形图颜色
+plt.bar(x, y, color='#4CAF50')
+plt.show()
+
+# 自定义各个柱形的颜色
+plt.bar(x, y, color=['#4CAF50', 'red', 'hotpink', '#556B2F'])
+plt.show()
+
+# 设置柱形图宽度 bar用width barh用height
+plt.subplot(121)
+plt.bar(x, y, width=0.1)
+plt.subplot(122)
+plt.barh(x, y, height=0.5)
+plt.show()
 ```
 
 ### 饼图
 ```python
+import matplotlib.pyplot as plt
+import numpy as np
 
+'''
+pie(x, explode=None, labels=None, colors=None, autopct=None, pctdistance=0.6, shadow=False, labelsiatance=1.1, startangle=0,
+    radius=1, counterclock=True, wedgeprops=None, center=0, 0, frame=False, totatelabels=False, *, normalize=None, data=None)[source]
+
+x：浮点型数组或列表，用于绘制饼图的数据，表示每个扇形的面积。
+explode：数组，表示各个扇形之间的间隔，默认值为0。
+labels：列表，各个扇形的标签，默认值为 None。
+colors：数组，表示各个扇形的颜色，默认值为 None。
+autopct：设置饼图内各个扇形百分比显示格式，%d%% 整数百分比，%0.1f 一位小数， %0.1f%% 一位小数百分比， %0.2f%% 两位小数百分比。
+labeldistance：标签标记的绘制位置，相对于半径的比例，默认值为 1.1，如 <1则绘制在饼图内侧。
+pctdistance：：类似于 labeldistance，指定 autopct 的位置刻度，默认值为 0.6。
+shadow：：布尔值 True 或 False，设置饼图的阴影，默认为 False，不设置阴影。
+radius：：设置饼图的半径，默认为 1。
+startangle：：用于指定饼图的起始角度，默认为从 x 轴正方向逆时针画起，如设定 =90 则从 y 轴正方向画起。
+counterclock：布尔值，用于指定是否逆时针绘制扇形，默认为 True，即逆时针绘制，False 为顺时针。
+wedgeprops ：property 字典类型，默认值 None。用于指定扇形的属性，比如边框线颜色、边框线宽度等。例如：wedgeprops={'linewidth':5} 设置 wedge 线宽为5。
+textprops ：property 字典类型，用于指定文本标签的属性，比如字体大小、字体颜色等，默认值为 None。
+center ：浮点类型的列表，用于指定饼图的中心位置，默认值：(0,0)。
+frame ：布尔类型，用于指定是否绘制饼图的边框，默认值：False。如果是 True，绘制带有表的轴框架。
+rotatelabels ：布尔类型，用于指定是否旋转文本标签，默认为 False。如果为 True，旋转每个 label 到指定的角度。
+data：用于指定数据。如果设置了 data 参数，则可以直接使用数据框中的列作为 x、labels 等参数的值，无需再次传递。
+
+除此之外，pie() 函数还可以返回三个参数：
+1. wedges：一个包含扇形对象的列表。
+2. texts：一个包含文本标签对象的列表。
+3. autotexts：一个包含自动生成的文本标签对象的列表。
+'''
+
+y = np.array([35, 25, 25, 15])
+plt.pie(y)
+plt.show()
+
+# 设置饼图各个扇区的标签和颜色
+plt.pie(y, labels=['A', 'B', 'C', 'D'], colors=['#D5695D', '#5D8CA8', '#65A479', '#A564C9'])
+plt.title('pie test')
+plt.show()
+
+# 突出显示第二个扇形，并格式化输出百分比
+sizes = [15, 30, 45, 10]
+labels = ['A', 'B', 'C', 'D']
+colors = ['yellowgreen', 'gold', 'lightskyblue', 'lightcoral']
+explode = (0, 0.1, 0, 0) # 突出显示
+plt.pie(sizes, explode=explode, labels=labels, colors=colors, autopct='%1.1f%%', shadow=True, startangle=90)
+plt.show()
+
+sizes = [35, 25, 25, 15]
+labels = ['A', 'B', 'C', 'D']
+colors = ['#D5695D', '#5D8CA8', '#65A479', '#A564C9']
+explode = (0, 0.2, 0, 0) # 突出显示
+plt.pie(sizes, explode=explode, labels=labels, colors=colors, autopct='%.2f%%')
+plt.show()
 ```
 
 ### 直方图
 ```python
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 
+'''
+hist(x, bins=None, range=None, density=False, weights=None, cumulative=False, bottom=None, histtype='bar', align='mid',
+    orientation='vertical', rwidth=None, log=False, color=None, stacked=False, **kwargs)
+
+x：表示要绘制直方图的数据，可以是一个一维数组或列表。
+bins：可选参数，表示直方图的箱数。默认为10。
+range：可选参数，表示直方图的值域范围，可以是一个二元组或列表。默认为None，即使用数据中的最小值和最大值。
+density：可选参数，表示是否将直方图归一化。默认为False，即直方图的高度为每个箱子内的样本数，而不是频率或概率密度。
+weights：可选参数，表示每个数据点的权重。默认为None。
+cumulative：可选参数，表示是否绘制累积分布图。默认为False。
+bottom：可选参数，表示直方图的起始高度。默认为None。
+histtype：可选参数，表示直方图的类型，可以是'bar'、'barstacked'、'step'、'stepfilled'等。默认为'bar'。
+align：可选参数，表示直方图箱子的对齐方式，可以是'left'、'mid'、'right'。默认为'mid'。
+orientation：可选参数，表示直方图的方向，可以是'vertical'、'horizontal'。默认为'vertical'。
+rwidth：可选参数，表示每个箱子的宽度。默认为None。
+log：可选参数，表示是否在y轴上使用对数刻度。默认为False。
+color：可选参数，表示直方图的颜色。
+label：可选参数，表示直方图的标签。
+stacked：可选参数，表示是否堆叠不同的直方图。默认为False。
+**kwargs：可选参数，表示其他绘图参数。
+'''
+data = np.random.randn(1000)
+plt.hist(data, bins=30, color='skyblue', alpha=0.8)
+plt.title('hist test')
+plt.xlabel('value')
+plt.ylabel('frequency')
+plt.show()
+
+data1 = np.random.normal(0, 1, 100000) # 正态分布随机数组 mu sigma size
+data2 = np.random.normal(2, 1, 100000)
+data3 = np.random.normal(-2, 1, 100000)
+
+plt.hist(data1, bins=30, alpha=0.5, label='Data 1')
+plt.hist(data2, bins=30, alpha=0.5, label='Data 2')
+plt.hist(data3, bins=30, alpha=0.5, label='Data 3')
+
+plt.title('hist test')
+plt.xlabel('value')
+plt.ylabel('frequency')
+plt.legend() # 显示图例
+plt.show()
+
+# * 结合pandas
+random_data = np.random.normal(170, 10, 250)
+dataframe = pd.DataFrame(random_data) # 数据转换为DataFrame
+dataframe.hist() # 使用Pandas.hist() 方法绘制直方图
+plt.title('Pandas hist test')
+plt.xlabel('X-value')
+plt.ylabel('y-value')
+plt.show()
+
+# 使用series对象绘制直方图 将数据框的列替换为series对象即可
+data = pd.Series(np.random.normal(size=100))
+plt.hist(data, bins=10)
+plt.title('Pandas hist test')
+plt.xlabel('X-value')
+plt.ylabel('y-value')
+plt.show()
 ```
 
 ### imshow()
 ```python
+import matplotlib.pyplot as plt
+import numpy as np
+from PIL import Image
 
+'''
+imshow() 用于显示图像，常用于绘制二维的灰度图像或彩色图像，还可用于绘制矩阵、热力图、地图等
+imshow(x, cmap=None, norm=None, aspect=None, interpolation=None, alpha=None, vimn-None, vmax=None, origin=None, extent=None,
+        shape=None, filternorm=1, filterrad=4.0, imlim=None, resample=None, url=None, *, data=None, **kwargs)
+
+X：输入数据。可以是二维数组、三维数组、PIL图像对象、matplotlib路径对象等。
+cmap：颜色映射。用于控制图像中不同数值所对应的颜色。可以选择内置的颜色映射，如gray、hot、jet等，也可以自定义颜色映射。
+norm：用于控制数值的归一化方式。可以选择Normalize、LogNorm等归一化方法。
+aspect：控制图像纵横比（aspect ratio）。可以设置为auto或一个数字。
+interpolation：插值方法。用于控制图像的平滑程度和细节程度。可以选择nearest、bilinear、bicubic等插值方法。
+alpha：图像透明度。取值范围为0~1。
+origin：坐标轴原点的位置。可以设置为upper或lower。
+extent：控制显示的数据范围。可以设置为[xmin, xmax, ymin, ymax]。
+vmin、vmax：控制颜色映射的值域范围。
+filternorm 和 filterrad：用于图像滤波的对象。可以设置为None、antigrain、freetype等。
+imlim： 用于指定图像显示范围。
+resample：用于指定图像重采样方式。
+url：用于指定图像链接。
+'''
+
+# 显示灰度图像
+img = np.random.rand(10, 10)
+plt.imshow(img, cmap='gray')
+plt.show()
+
+# 显示彩色图像
+img = np.random.rand(10, 10, 3) # 生成size=(10,10,3)的均匀分布数组[0,1)
+plt.imshow(img)
+plt.show()
+
+# 显示热力图
+data = np.random.rand(10, 10)
+plt.imshow(data, cmap='hot')
+plt.colorbar() # 加颜色条
+plt.show()
+
+# 显示地图
+img = Image.open('related_data/map.jpeg')
+data = np.array(img)
+plt.imshow(data)
+plt.axis('off') # 隐藏坐标轴
+plt.show()
+
+# 显示矩阵
+data = np.random.rand(10, 10)
+plt.imshow(data)
+plt.show()
+
+# 三种不同imshow图像展示
+n = 4
+a = np.reshape(np.linspace(0, 1, n ** 2), (n, n)) # 创建n*n的二维数组
+plt.figure(figsize=(12, 4.5))
+
+# 展示灰度的色彩映射方式 进行没有进行颜色的混合
+plt.subplot(131)
+plt.imshow(a, cmap='gray', interpolation='nearest')
+plt.xticks(range(n))
+plt.yticks(range(n))
+plt.title('gray color map, no blending', y=1.02, fontsize=12)
+
+# 展示使用viridis颜色映射的图像 没有颜色的混合
+plt.subplot(132)
+plt.imshow(a, cmap='viridis', interpolation='nearest')
+plt.yticks([]) # x轴刻度位置的列表，若传入空列表，即不显示x轴
+plt.xticks(range(n))
+plt.title('viridis color map, no blending', y=1.02, fontsize=12)
+
+# 展示使用viridis颜色映射的图像 使用双立方插值的方法进行颜色混合
+plt.subplot(133)
+plt.imshow(a, cmap='viridis', interpolation='bicubic')
+plt.yticks([])
+plt.xticks(range(n))
+plt.title('visidis color map, bicubic blending', y=1.02, fontsize=12)
+
+plt.show()
 ```
 
 ### imsave()
 ```python
+import matplotlib.pyplot as plt
+import numpy as np
 
+'''
+imsave(fname, arr, **kwargs) 将图像数据保存在磁盘上 保存在指定目录 支持PNG JPEG BMP等多种图像格式
+kwargs: 可选。用于指定保存的图像格式以及图像质量等参数
+'''
+
+img_data = np.random.random((100, 100)) # 功能同rand 但random传入一个完整的元组 rand接收分开的参数
+plt.imshow(img_data)
+plt.imsave('related_data/test.png', img_data)
+
+# 创建灰度图像
+img_gray = np.random.random((100, 100))
+# 创建彩色图像
+img_color = np.zeros((100, 100, 3))
+img_color[:, :, 0] = np.random.random((100, 100))
+img_color[:, :, 1] = np.random.random((100, 100))
+img_color[:, :, 2] = np.random.random((100, 100))
+
+plt.imshow(img_gray, cmap='gray')
+plt.imsave('related_data/test_gray.png', img_gray, cmap='gray')
+plt.imshow(img_color)
+plt.imsave('related_data/test_color.jpg', img_color) # 若未指定图像格式 默认保存JPEG格式
 ```
 
 ### imread()
 ```python
+import matplotlib.pyplot as plt
+import numpy as np
 
+'''
+imread(fname, format=None) 从图像文件中读取图像数据，返回一个np.ndarray对象。形状(nrows, ncols, nchannels) 灰度图像通道数1 彩色图像通道数3或4 红绿蓝还有alpha通道
+format: 指定图像文件格式，若不指定，默认根据文件后缀自动识别格式
+'''
+
+img = plt.imread('related_data/map.jpeg')
+plt.imshow(img)
+plt.show()
+
+# 更改numpy数组修改图像 这里使图像变暗
+img_map = img / 255
+plt.figure(figsize=(10, 6))
+
+for i in range(1, 5):
+    plt.subplot(2, 2, i)
+    x = 1 - 0.2 *(i - 1)
+    plt.axis('off')
+    plt.title('x={:.1f}'.format(x))
+    plt.imshow(img_map * x)
+plt.show()
 ```
 
 ### 中文显示
 ```python
+import matplotlib.font_manager
+import matplotlib.pyplot as plt
+import matplotlib
+import numpy as np
 
+# 获取系统字体库列表
+# from matplotlib import pyplot as plt
+# import matplotlib
+# a=sorted([f.name for f in matplotlib.font_manager.fontManager.ttflist])
+
+# for i in a:
+#     print(i)
+
+
+# 两种方法
+# 1.替换Matplotlib默认字体
+plt.rcParams['font.family'] = 'Source Han Sans CN'
+x = [1, 2, 3, 4, 5]
+y = [2, 4, 6, 8, 10]
+plt.plot(x, y)
+plt.title('折线图实例(替换默认字体)')
+plt.xlabel('x轴')
+plt.ylabel('y轴')
+plt.show()
+
+# 2. 使用OTF字体库
+font = matplotlib.font_manager.FontProperties(fname='related_data/SourceHanSansCN-Bold.otf')
+x = [1, 2, 3, 4, 5]
+y = [2, 4, 6, 8, 10]
+plt.plot(x, y)
+plt.title('折线图实例(设置字体属性)', fontproperties=font)
+plt.xlabel('x轴', fontproperties=font)
+plt.ylabel('y轴', fontproperties=font)
+plt.show()
+```
+
+### Seaborn入门
+```python
+'''
+Seaborn 是一个建立在matplotlib基础之上的python数据可视化库
+简化统计数据可视化过程，提供高级接口和美观的默认主题
+提供高级接口，轻松绘制散点图、折线图、柱状图、热图等
+注重美观性，绘图更吸引人
+'''
+import seaborn as sns
+import matplotlib.pyplot as plt
+import pandas as pd
+'''
+sns.set_theme() 选择不同的主题和模板
+
+主题theme: 
+darkgrid(默认)：深色网格主题
+whitegold：浅色网格主题
+dark：深色主题 没有网络
+white：浅色主题 没有网络
+ticks：深色主题 带有刻度标记
+
+模板Context
+paper：适用于小图，具有较小的标签和线条
+notebook(默认)：适用于笔记本电脑和类型环境，具有中等大小的标签和线条
+talk：适用于演讲幻灯片，大尺寸标签和线条
+poster： 适用于海报，非常大的标签和线条
+'''
+sns.set_theme(style='whitegrid', palette='pastel')
+products = ['product A', 'product B', 'product C', 'product D']
+sales = [120, 210, 150, 180]
+sns.barplot(x=products, y=sales) # 创建柱状图
+plt.xlabel('products')
+plt.ylabel('sales')
+plt.title('product sales by category')
+plt.show()
+
+# * 绘图函数
+# 散点图 sns.scatterplot() 用于绘制两个变量之间的散点图，可选择增加趋势线
+data = {'A': [1, 2, 3, 4, 5], 'B':[5, 4, 3, 2, 1]}
+df = pd.DataFrame(data)
+sns.scatterplot(x='A', y='B', data=df)
+plt.show()
+
+# 折线图 sns.lineplot() 绘制变量随着另一个变量变化的趋势线图
+data = {'X': [1, 2, 3, 4, 5], 'Y':[5, 4, 3, 2, 1]}
+df = pd.DataFrame(data)
+sns.lineplot(x='X', y='Y', data=df)
+plt.show()
+
+# 柱状图 sns.barplot() 绘制变量的均值或其他聚合函数的柱状图
+data = {'Category':['A', 'B', 'C'], 'Value':[3, 7, 5]}
+df = pd.DataFrame(data)
+sns.barplot(x='Category', y='Value', data=df)
+plt.show()
+
+# 箱线图 sns.boxplot() 绘制变量的分布情况，包括中位数、四分位数等
+data = {'Category':['A', 'A', 'B', 'B', 'C', 'C'], 'Value':[3, 7, 5, 9, 2, 6]}
+df = pd.DataFrame(data)
+sns.boxplot(x='Category', y='Value', data=df)
+plt.show()
+
+# 热图 sns.heatmap() 绘制矩阵数据的热图，展示相关性矩阵
+data = {'A': [1, 2, 3, 4, 5], 'B':[5, 4, 3, 2, 1]}
+df = pd.DataFrame(data)
+correlation_matrix = df.corr() # 创建一个相关性矩阵
+sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt='.2f')
+plt.show()
+
+# 小提琴图 sns.violinplot() 显示分布的形状和密度估计，结合了箱线图和核密度估计
+data = {'Category':['A', 'A', 'B', 'B', 'C', 'C'], 'Value':[3, 7, 5, 9, 2, 6]}
+df = pd.DataFrame(data)
+sns.violinplot(x='Category', y='Value', data=df)
+plt.show()
 ```
