@@ -5,6 +5,15 @@
 菜鸟网 https://www.runoob.com/
 
 ## NumPy
+
+**NumPy**
+1. 是一个开源的Python科学计算基础库  
+2. 有一个强大的N维数组对象ndarray  
+3. 广播功能函数  
+4. 整合C/C++/Fortran代码的工具  
+5. 线性代数、傅里叶变换、随机数生成等功能  
+6. 是SciPy、Pandas等数据处理或科学计算库的基础  
+
 ### 数据的维度
 **维度**是一组数据的组织形式
 
@@ -34,13 +43,6 @@
 |||
 
 ### NumPy的数组对象ndarray
-**NumPy**
-1. 是一个开源的Python科学计算基础库  
-2. 有一个强大的N维数组对象ndarray  
-3. 广播功能函数  
-4. 整合C/C++/Fortran代码的工具  
-5. 线性代数、傅里叶变换、随机数生成等功能  
-6. 是SciPy、Pandas等数据处理或科学计算库的基础  
 
 **N维数组对象ndarray**
 1. 数组对象可以去掉元素间运算所需的循环，使一维向量更像单个数据
@@ -54,8 +56,10 @@
 ![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407211328315.png)
 ![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407211329907.png)
 ![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407211329850.png)
+
 python仅支持**整数**、**浮点数**和**复数**3种类型   
 科学计算设计数据较多，对存储和性能有较高要求，对元素类型精确定义有助于NumPy合理使用存储空间并优化性能，也有助于程序员对程序规模合理评估
+
 ```python
 import numpy as np
 # x = np.array(list/tuple, dtype='int32', ndmin) 可以指定数据类型
@@ -1432,6 +1436,7 @@ im.save('related_data/dog_hand_painting.jpg')
 ```
 
 ## Matplotlib
+
 **Matplotlib**
 1. 是python的绘图库，使数据图形化，提供多样化的输出格式
 2. 可以绘制各种静态、动态、交互式的图表
@@ -2416,4 +2421,216 @@ fig.tight_layout() # 自动调整外部边缘
 plt.savefig('related_data/Gravitational_Waves_Original.png')
 plt.show()
 plt.close(fig)
+```
+
+## Pandas
+
+**Pandas**
+1. 是 Python 语言的一个扩展程序库，用于数据分析。
+2. 名字衍生自术语 "panel data"（面板数据）和 "Python data analysis"（Python 数据分析）。
+3. 是一个开放源码、BSD 许可的库，提供高性能、易于使用的数据结构和数据分析工具。
+4. 是一个强大的分析结构化数据的工具集，基础是 Numpy（提供高性能的矩阵运算）。
+
+**应用场景**
+1. 可以从各种文件格式比如 CSV、JSON、SQL、Microsoft Excel 导入数据。
+2. 可以对各种数据进行运算操作，比如归并、再成形、选择，还有数据清洗和数据加工特征。
+3. 广泛应用在学术、金融、统计学等各个数据分析领域。
+
+**数据结构**
+Pandas 的主要数据结构是 Series （一维数据）与 DataFrame（二维数据）。
+1. Series 是一种类似于一维数组的对象，它由一组数据（各种 Numpy 数据类型）以及一组与之相关的数据标签（即索引）组成。
+2. DataFrame 是一个表格型的数据结构，它含有一组有序的列，每列可以是不同的值类型（数值、字符串、布尔型值）。DataFrame 既有行索引也有列索引，它可以被看做由 Series 组成的字典（共同用一个索引）。
+
+**特点**
+Pandas 可以轻松地处理各种数据结构，尤其是表格型数据，如 SQL 数据库或 Excel 表格。
+1. 数据结构：Pandas 提供了两种主要的数据结构：Series 和 DataFrame。Series 是一维标记数组，类似于 Python 中的列表或 NumPy 中的数组，而 DataFrame 是一个二维的表格型数据结构，类似于 SQL 表或 Excel 表格。
+2. 数据加载与保存：Pandas 可以从各种数据源加载数据，包括 CSV 文件、Excel 表格、SQL 数据库、JSON 文件等，并且可以将处理后的数据保存到这些格式中。
+3. 数据清洗与转换：Pandas 提供了丰富的函数和方法，用于数据清洗、处理缺失值、重复值、异常值等，以及进行数据转换、重塑和合并操作。
+4. 数据分析与统计：Pandas 提供了各种统计函数和方法，用于描述性统计、聚合操作、分组运算、透视表等数据分析任务。
+5. 数据可视化：Pandas 结合了 Matplotlib 库，可以轻松地进行数据可视化，绘制各种统计图表，如折线图、散点图、直方图等。
+
+Pandas 是 Python 数据科学领域中不可或缺的工具之一，它的灵活性和强大的功能使得数据处理和分析变得更加简单和高效。
+
+### Series
+Series类似表格的一个列。类似一维数组，可以保存任何数据类型
+Series可以处理各种数据类型，同时保持高效的数据操作能力
+特点：
+1. 一维数组：一维的，只有一个轴，类似列表
+2. 索引：每个Series都有一个索引，可以是整数、字符串、日期等类型。如果不指定索引，Pandas 将默认创建一个从 0 开始的整数索引。
+3. 数据类型： Series 可以容纳不同数据类型的元素，包括整数、浮点数、字符串、Python 对象等。
+4. 大小不变性：Series 的大小在创建后是不变的，但可以通过某些操作（如 append 或 delete）来改变。
+5. 操作：Series 支持各种操作，如数学运算、统计分析、字符串处理等。
+6. 缺失数据：Series 可以包含缺失数据，Pandas 使用NaN（Not a Number）来表示缺失或无值。
+
+```python
+import pandas as pd
+import numpy as np
+
+# 创建Series
+'''
+pandas.Series(data=None, index=None, dtype=None, name=None, copy=False, fastpath=False)
+
+data：Series 的数据部分，可以是列表、数组、字典、标量值等。如果不提供此参数，则创建一个空的 Series。
+index：Series 的索引部分，用于对数据进行标记。可以是列表、数组、索引对象等。如果不提供此参数，则创建一个默认的整数索引。
+dtype：指定 Series 的数据类型。可以是 NumPy 的数据类型，例如 np.int64、np.float64 等。如果不提供此参数，则根据数据自动推断数据类型。
+name：Series 的名称，用于标识 Series 对象。如果提供了此参数，则创建的 Series 对象将具有指定的名称。
+copy：是否复制数据。默认为 False，表示不复制数据。如果设置为 True，则复制输入的数据。
+fastpath：是否启用快速路径。默认为 False。启用快速路径可能会在某些情况下提高性能。
+'''
+a = [1, 2, 3]
+myvar = pd.Series(a)
+print(myvar) # 索引在左 数据在右 数据类型在下
+print(myvar[1]) # 指定索引
+
+# 指定索引值
+a = ['Iven', 'Rosenn', 'Starry']
+myvar = pd.Series(a, index=['x', 'y', 'z'])
+print(myvar['y'])
+
+# 也可以用key/value对象，类似字典来创建Series
+sites = {1:'Iven', 2:'Rosenn', 3:'Starry'}
+myvar = pd.Series(sites)
+print(myvar)
+# 可以看出key变成了索引值，可以通过key取出数据
+print(myvar[1])
+
+# 如果只需要字典中的一部分数据，只需要指定需要数据的索引即可
+myvar = pd.Series(sites, index=[1, 2])
+print(myvar)
+
+# 设置Series名称参数
+myvar = pd.Series(sites, index=[1, 2], name='Iven_Series_test')
+print(myvar)
+
+# 使用列表、字典或数组创建一个默认索引的Series
+s = pd.Series([1, 2, 3, 4])
+s = pd.Series(np.array([1, 2, 3, 4]))
+s = pd.Series({'a':1, 'b':2, 'c':3, 'd':4})
+
+# todo 基本操作
+# 指定索引创建Series
+s = pd.Series([1, 2, 3, 4], index=['a', 'b', 'c', 'd'])
+
+# 获取值
+value = s[2] # 不良好的书写习惯 尽量使用数据标签获取值
+print(value)
+print(s['a'])
+
+# 获取多个值
+subset = s[1:4]
+print(subset)
+
+# 使用自定义索引
+value = s['b']
+print(value)
+
+# 索引与值对应的关系
+for index, value in s.items():
+    print(f'Index: {index}, value:{value}')
+
+# 使用切片语法来访问Series的一部分
+print(s['a':'c'])
+print(s[:3])
+
+# 为特定的索引标签赋值
+s['a'] = 10
+
+# 通过赋值给新的索引标签来添加元素
+s['e'] = 5
+
+# 使用 del 删除指定索引标签的元素
+del s['a']
+
+# 使用 drop 方法删除一个或多个索引标签，返回一个新的Series
+s_dropped = s.drop(['b'])
+print(s_dropped)
+
+# todo 基本运算
+# 算术运算
+result = s_dropped * 2 # 所有元素乘2
+print(result)
+
+# 过滤
+filtered_series = s_dropped[s_dropped > 3]
+print(filtered_series)
+
+# 数学函数
+result = np.sqrt(s_dropped)
+print(result)
+
+# todo 计算统计数据 使用Series的方法来计算描述性统计
+print(s_dropped.sum()) # 计算Series的总和
+print(s_dropped.mean()) # 平均值
+print(s_dropped.max()) # 最大值
+print(s_dropped.min()) # 最小值
+print(s_dropped.std()) # 标准差
+
+# todo 属性和方法
+# 获取索引
+index = s.index
+print(index)
+
+# 获取值数组
+values = s.values
+print(values)
+
+# 获取描述统计信息
+stats = s.describe()
+print(stats)
+
+# 获取最大值最小值索引
+max_index = s.idxmax()
+print(max_index)
+min_index = s.idxmin()
+print(min_index)
+
+# 其他属性和方法
+print(s.dtype) # 数据类型
+print(s.shape) # 形状
+print(s.size)  # 元素个数
+print(s.head())# 前几个元素，默认前五个
+print(s.tail())# 后几个元素，默认后五个
+print(s.sum()) # 求和
+print(s.mean())# 平均值
+print(s.max()) # 最大值
+print(s.min()) # 最小值
+print(s.std()) # 标准差
+
+# 布尔表达式 根据条件过滤Series
+print(s > 3)
+
+# 转换数据类型 astype 将Series转换为另一种数据类型
+s_astype = s.astype('float64')
+print(s.dtype)
+print(s_astype.dtype)
+```
+
+### DataFrame
+```python
+
+```
+
+### CSV
+```python
+
+```
+
+### JSON
+```python
+
+```
+
+### 数据清洗
+```python
+
+```
+
+### 常用函数
+```python
+
+```
+
+### 相关性分析
+```python
+
 ```
