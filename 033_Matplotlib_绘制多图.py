@@ -107,3 +107,26 @@ fig = plt.figure()  #首先调用plt.figure()创建了一个**画窗对象fig**
 ax = fig.add_subplot(111)  #然后再对fig创建默认的坐标区（一行一列一个坐标区）  笛卡尔坐标系
 #这里的（111）相当于（1，1，1），当然，官方有规定，当子区域不超过9个的时候，我们可以这样简写
 '''
+
+'''
+plt.subplot2grid(shape, location, colspan=1, rowspan=1)
+设定网络 选中网格 确定选中行列区域数量 编号从0开始
+shape：把该参数值规定的网格区域作为绘图区域；
+location：在给定的位置绘制图形，初始位置 (0,0) 表示第1行第1列；
+rowsapan/colspan：这两个参数用来设置让子区跨越几行几列。
+'''
+
+#使用 colspan指定列，使用rowspan指定行
+a1 = plt.subplot2grid((3,3),(0,0),colspan = 2)
+a2 = plt.subplot2grid((3,3),(0,2), rowspan = 3)
+a3 = plt.subplot2grid((3,3),(1,0),rowspan = 2, colspan = 2)
+
+x = np.arange(1,10)
+a2.plot(x, x*x)
+a2.set_title('square')
+a1.plot(x, np.exp(x))
+a1.set_title('exp')
+a3.plot(x, np.log(x))
+a3.set_title('log')
+plt.tight_layout()
+plt.show()

@@ -245,7 +245,7 @@ print(x)
 ```python
 import numpy as np
 
-# np.arange(staet, stop, step, dtype)不包含stop
+# np.arange(start, stop, step, dtype)不包含stop
 x = np.arange(10)
 print(x)
 x = np.arange(10, dtype=float)
@@ -1437,6 +1437,11 @@ im.save('related_data/dog_hand_painting.jpg')
 2. 可以绘制各种静态、动态、交互式的图表
 3. 可以绘制线图、散点图、等高线图、条形图、柱状图、3D图形、甚至是图像动画等
 
+**基础图表函数**
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407291325680.png)
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407291325218.png)
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407291326615.png)
+
 ### Pyplot
 ```python
 '''
@@ -1589,7 +1594,7 @@ plt.plot(x1, y1, x2, y2)
 plt.show()
 ```
 
-### 轴标签和标题
+### 文本显示
 ```python
 import matplotlib.pyplot as plt
 import matplotlib.font_manager
@@ -1640,6 +1645,28 @@ plt.title('matplotlib 练习', fontproperties=zhfont1, fontdict=font1, loc='righ
 plt.plot(x, y)
 plt.xlabel('x轴', fontproperties=zhfont1, loc='left')
 plt.ylabel('y轴', fontproperties=zhfont1, loc='bottom')
+plt.show()
+
+# 任意位置添加文本 text(x, y, str)
+a = np.arange(0.0, 5.0, 0.02)
+plt.plot(a, np.cos(2 * np.pi * a), 'r--')
+plt.xlabel('横轴：时间', fontproperties='SimHei', fontsize=15, color='green')
+plt.ylabel('纵轴：振幅', fontproperties='SimHei', fontsize=15)
+plt.title(r'正弦波实例 $y=cos(2 \pi x)$', fontproperties='SimHei', fontsize=25) # latex公式
+plt.text(2, 1, r'$ \mu = 100 $')
+plt.axis([-1, 6, -2, 2])
+plt.grid(True)
+plt.show()
+
+# 在图形中增加带箭头的注解 annotate(s, xy=arrow_crd, xytext=text_crd, arrowprop=dict) xy:箭头指向位置 xytext:文本位置
+a = np.arange(0.0, 5.0, 0.02)
+plt.plot(a, np.cos(2 * np.pi * a), 'r--')
+plt.xlabel('横轴：时间', fontproperties='SimHei', fontsize=15, color='green')
+plt.ylabel('纵轴：振幅', fontproperties='SimHei', fontsize=15)
+plt.title(r'正弦波实例 $y=cos(2 \pi x)$', fontproperties='SimHei', fontsize=25) # latex公式
+plt.annotate(r'$\mu = 100$', xy=(2, 1), xytext=(3, 1.5), arrowprops=dict(facecolor='black', shrink=0.1, width=2))
+plt.axis([-1, 6, -2, 2])
+plt.grid(True)
 plt.show()
 ```
 
@@ -1795,6 +1822,29 @@ fig = plt.figure()  #首先调用plt.figure()创建了一个**画窗对象fig**
 ax = fig.add_subplot(111)  #然后再对fig创建默认的坐标区（一行一列一个坐标区）  笛卡尔坐标系
 #这里的（111）相当于（1，1，1），当然，官方有规定，当子区域不超过9个的时候，我们可以这样简写
 '''
+
+'''
+plt.subplot2grid(shape, location, colspan=1, rowspan=1)
+设定网络 选中网格 确定选中行列区域数量 编号从0开始
+shape：把该参数值规定的网格区域作为绘图区域；
+location：在给定的位置绘制图形，初始位置 (0,0) 表示第1行第1列；
+rowsapan/colspan：这两个参数用来设置让子区跨越几行几列。
+'''
+
+#使用 colspan指定列，使用rowspan指定行
+a1 = plt.subplot2grid((3,3),(0,0),colspan = 2)
+a2 = plt.subplot2grid((3,3),(0,2), rowspan = 3)
+a3 = plt.subplot2grid((3,3),(1,0),rowspan = 2, colspan = 2)
+
+x = np.arange(1,10)
+a2.plot(x, x*x)
+a2.set_title('square')
+a1.plot(x, np.exp(x))
+a1.set_title('exp')
+a3.plot(x, np.log(x))
+a3.set_title('log')
+plt.tight_layout()
+plt.show()
 ```
 
 ### 散点图
@@ -2033,6 +2083,42 @@ plt.hist(data, bins=10)
 plt.title('Pandas hist test')
 plt.xlabel('X-value')
 plt.ylabel('y-value')
+plt.show()
+```
+
+### 极坐标图
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+N = 20
+theta = np.linspace(0.0, 2 * np.pi, N, endpoint=False)
+radii = 10 * np.random.rand(N)
+width = np.pi / 4 * np.random.rand(N)
+
+ax = plt.subplot(111, projection='polar')
+bars = ax.bar(theta, radii, width=width, bottom=0.0)
+
+for r, bar in zip(radii, bars):
+    bar.set_facecolor(plt.cm.viridis(r / 10))
+    bar.set_alpha(0.5)
+
+plt.show()
+
+N = 10
+theta = np.linspace(0.0, 2 * np.pi, N, endpoint=False)
+radii = 10 * np.random.rand(N)
+width = np.pi / 2 * np.random.rand(N)
+
+ax = plt.subplot(111, projection='polar')
+bars = ax.bar(theta, radii, width=width, bottom=0.0)
+# 这里left对应从哪个角度开始 height对应扇区高度 width对应转过多少角度
+
+# 设定颜色
+for r, bar in zip(radii, bars):
+    bar.set_facecolor(plt.cm.viridis(r / 10))
+    bar.set_alpha(0.5)
+
 plt.show()
 ```
 
@@ -2285,4 +2371,49 @@ data = {'Category':['A', 'A', 'B', 'B', 'C', 'C'], 'Value':[3, 7, 5, 9, 2, 6]}
 df = pd.DataFrame(data)
 sns.violinplot(x='Category', y='Value', data=df)
 plt.show()
+```
+
+### 实例_引力波的绘制
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.io import wavfile # 读取波形文件的库
+
+rate_h, hstrain = wavfile.read(r'related_data/H1_Strain.wav', 'rb') # 读取声音文件
+rate_l, lstrain = wavfile.read(r'related_data/L1_Strain.wav', 'rb')
+# 读取时间序列和信号数据 genfromtxt执行两个循环 第一个循环将文件每一行转化为字符串 第二个循环将每个字符串转换成相应的类型 因为读取出的是一个两行的矩阵 不方便使用 因此使用tranpose转置
+reftime, ref_H1 = np.genfromtxt('related_data/wf_template.txt').transpose()
+
+htime_interval = 1 / rate_h
+ltime_interval = 1 / rate_l
+
+htime_len = hstrain.shape[0] / rate_h
+htime = np.arange(-htime_len / 2, htime_len / 2, htime_interval)
+ltime_len = lstrain.shape[0] / rate_l
+ltime = np.arange(-ltime_len / 2, ltime_len / 2, ltime_interval)
+
+fig = plt.figure(figsize=(12, 6))
+
+plth = fig.add_subplot(221)
+plth.plot(htime, hstrain, 'y')
+plth.set_xlabel('Time(seconds)')
+plth.set_ylabel('H1 Strain')
+plth.set_title('H1 Strain')
+
+pltl = fig.add_subplot(222)
+pltl.plot(ltime, lstrain, 'g')
+pltl.set_xlabel('Time(seconds)')
+pltl.set_ylabel('L1 Strain')
+pltl.set_title('L1 Strain')
+
+plth = fig.add_subplot(212)
+plth.plot(reftime, ref_H1)
+plth.set_xlabel('Time(seconds)')
+plth.set_ylabel('Template Strain')
+plth.set_title('Template Strain')
+fig.tight_layout() # 自动调整外部边缘
+
+plt.savefig('related_data/Gravitational_Waves_Original.png')
+plt.show()
+plt.close(fig)
 ```

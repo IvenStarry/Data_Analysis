@@ -48,3 +48,25 @@ plt.plot(x, y)
 plt.xlabel('x轴', fontproperties=zhfont1, loc='left')
 plt.ylabel('y轴', fontproperties=zhfont1, loc='bottom')
 plt.show()
+
+# 任意位置添加文本 text(x, y, str)
+a = np.arange(0.0, 5.0, 0.02)
+plt.plot(a, np.cos(2 * np.pi * a), 'r--')
+plt.xlabel('横轴：时间', fontproperties='SimHei', fontsize=15, color='green')
+plt.ylabel('纵轴：振幅', fontproperties='SimHei', fontsize=15)
+plt.title(r'正弦波实例 $y=cos(2 \pi x)$', fontproperties='SimHei', fontsize=25) # latex公式
+plt.text(2, 1, r'$ \mu = 100 $')
+plt.axis([-1, 6, -2, 2])
+plt.grid(True)
+plt.show()
+
+# 在图形中增加带箭头的注解 annotate(s, xy=arrow_crd, xytext=text_crd, arrowprop=dict) xy:箭头指向位置 xytext:文本位置
+a = np.arange(0.0, 5.0, 0.02)
+plt.plot(a, np.cos(2 * np.pi * a), 'r--')
+plt.xlabel('横轴：时间', fontproperties='SimHei', fontsize=15, color='green')
+plt.ylabel('纵轴：振幅', fontproperties='SimHei', fontsize=15)
+plt.title(r'正弦波实例 $y=cos(2 \pi x)$', fontproperties='SimHei', fontsize=25) # latex公式
+plt.annotate(r'$\mu = 100$', xy=(2, 1), xytext=(3, 1.5), arrowprops=dict(facecolor='black', shrink=0.1, width=2))
+plt.axis([-1, 6, -2, 2])
+plt.grid(True)
+plt.show()

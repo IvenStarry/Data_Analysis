@@ -1,6 +1,6 @@
 import numpy as np
 
-# np.arange(staet, stop, step, dtype)不包含stop
+# np.arange(start, stop, step, dtype)不包含stop
 x = np.arange(10)
 print(x)
 x = np.arange(10, dtype=float)
