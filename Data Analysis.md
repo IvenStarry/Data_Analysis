@@ -2606,18 +2606,272 @@ print(s_astype.dtype)
 ```
 
 ### DataFrame
-```python
+**DataFrame** 
+1. 是 Pandas 中的另一个核心数据结构，用于表示二维表格型数据。
+2. 是一个表格型的数据结构，它含有一组有序的列，每列可以是不同的值类型（数值、字符串、布尔型值）。
+3. 既有行索引也有列索引，它可以被看做由 Series 组成的字典（共同用一个索引）。
+4. 提供了各种功能来进行数据访问、筛选、分割、合并、重塑、聚合以及转换等操作。
 
+**特点**
+1. 二维结构： DataFrame 是一个二维表格，可以被看作是一个 Excel 电子表格或 SQL 表，具有行和列。可以将其视为多个 Series 对象组成的字典。
+2. 列的数据类型： 不同的列可以包含不同的数据类型，例如整数、浮点数、字符串或 Python 对象等。
+3. 索引：DataFrame 可以拥有行索引和列索引，类似于 Excel 中的行号和列标。
+4. 大小可变：可以添加和删除列，类似于 Python 中的字典。
+5. 自动对齐：在进行算术运算或数据对齐操作时，DataFrame 会自动对齐索引。
+6. 处理缺失数据：DataFrame 可以包含缺失数据，Pandas 使用 NaN（Not a Number）来表示。
+7. 数据操作：支持数据切片、索引、子集分割等操作。
+8. 时间序列支持：DataFrame 对时间序列数据有特别的支持，可以轻松地进行时间数据的切片、索引和操作。
+9. 丰富的数据访问功能：通过 .loc、.iloc 和 .query() 方法，可以灵活地访问和筛选数据。
+10. 灵活的数据处理功能：包括数据合并、重塑、透视、分组和聚合等。
+11. 数据可视化：虽然 DataFrame 本身不是可视化工具，但它可以与 Matplotlib 或 Seaborn 等可视化库结合使用，进行数据可视化。
+12. 高效的数据输入输出：可以方便地读取和写入数据，支持多种格式，如 CSV、Excel、SQL 数据库和 HDF5 格式。
+13. 描述性统计：提供了一系列方法来计算描述性统计数据，如 .describe()、.mean()、.sum() 等。
+14. 灵活的数据对齐和集成：可以轻松地与其他 DataFrame 或 Series 对象进行合并、连接或更新操作。
+15. 转换功能：可以对数据集中的值进行转换，例如使用 .apply() 方法应用自定义函数。
+16. 滚动窗口和时间序列分析：支持对数据集进行滚动窗口统计和时间序列分析。
+
+```python
+import pandas as pd
+import numpy as np
+
+# todo 创建DataFrame
+'''
+pandas.DataFrame(data=None, index=None, columns=None, dtype=None, copy=None)
+
+data：DataFrame 的数据部分，可以是字典、二维数组、Series、DataFrame 或其他可转换为 DataFrame 的对象。如果不提供此参数，则创建一个空的 DataFrame。
+index：DataFrame 的行索引，用于标识每行数据。可以是列表、数组、索引对象等。如果不提供此参数，则创建一个默认的整数索引。
+columns：DataFrame 的列索引，用于标识每列数据。可以是列表、数组、索引对象等。如果不提供此参数，则创建一个默认的整数索引。
+dtype：指定 DataFrame 的数据类型。可以是 NumPy 的数据类型，例如 np.int64、np.float64 等。如果不提供此参数，则根据数据自动推断数据类型。
+copy：是否复制数据。默认为 False，表示不复制数据。如果设置为 True，则复制输入的数据。
+'''
+
+# 使用列表创建
+data = [['Iven', 21], ['Rosenn', 25], ['Starry', 19]]
+df = pd.DataFrame(data, columns=['Name', 'Age'])
+df['Name'] = df['Name'].astype(str) # astype方法设置每列的数据类型
+df['Age'] = df['Age'].astype(float)
+print(df)
+
+# 使用字典创建
+data = {'Name':['Iven', 'Rosenn', 'Starry'], 'Age':[21, 25, 19]}
+df = pd.DataFrame(data)
+print(df)
+
+# 使用ndarray对象创建 长度必须相同，若传递了index，索引长度要等于数组长度，若未传递索引，默认是range(n),n是数组长度
+ndarray_data = np.array([['Iven', 21], ['Rosenn', 25], ['Starry', 19]])
+df = pd.DataFrame(ndarray_data, columns=['Name', 'Age'])
+print(df)
+
+# 使用字典创建 key为列名
+data = [{'a':1, 'b':2}, {'a':5, 'b':10, 'c':20}]
+df = pd.DataFrame(data)
+print(df) # 没有相对应的数据为NAN
+
+# 使用Series创建
+s1 = pd.Series(['Iven', 'Rosenn', 'Starry'])
+s2 = pd.Series([21, 23, 24])
+s3 = pd.Series(['Chengdu', 'Hangzhou', 'Xi\'an'])
+df = pd.DataFrame({'Name':s1, 'Age':s2, 'City':s3})
+print(df)
+
+# todo 访问DataFrame元素
+print('ooooooooooooooooooooooooooooooooooooooooo')
+# 访问行 loc 返回指定行的数据，若没有设置索引，第一行索引为0，第二行为1
+data = {'calories': [420, 280, 400], 'duration':[50, 45, 40]}
+df = pd.DataFrame(data)
+print(df.loc[0])
+print(df.loc[1]) # 返回结果是一个Series数据
+print(df.loc[[0,1]]) # 返回一个dataframe数据
+
+# 访问列 loc[] iloc[]
+data = {'calories': [420, 280, 400], 'duration':[50, 45, 40]}
+df = pd.DataFrame(data, index=['day1', 'day2', 'day3']) # 指定索引值
+print(df)
+print(df.loc['day2']) # df.loc[row_label, column_label] 索引名 day1 day2
+print(df.iloc[:, 0])  # df.iloc[row_index, column_index] 整数 0, 1, ...
+
+# 访问单个元素 [列][行] 先得到一列Series 在得到Series中的一个数据
+print(df['calories'][0]) 
+
+# todo DataFrame 属性和方法
+print(df.shape)      # 形状
+print(df.columns)    # 列名
+print(df.index)      # 索引
+print(df.head())     # 前几行数据，默认前五行
+print(df.tail())     # 后几行数据，默认后五行
+print(df.info())     # 数据信息
+print(df.describe()) # 描述统计信息
+print(df.mean())     # 求平均值
+print(df.sum())      # 求和
+print(df.max())      # 最大值
+print(df.min())      # 最小值
+
+# todo 修改DataFrame
+# 修改列数据
+df['calories'] = [200, 300, 400]
+# 修改行数据
+df.loc['day1'] = [100, 90]
+# 添加新列
+df['food'] = ['rice', 'banana', 'apple']
+# 添加新行 loc 指定特定索引添加新行 concat 合并两个或多个DataFrame  append(已被弃用)
+df.loc['day4'] = [500, 60, 'bread']
+new_row = pd.DataFrame([[600, 70, 'cococola']], index=['day5'], columns=['calories', 'duration', 'food'])
+df = pd.concat([df, new_row], ignore_index=False)
+print(df)
+# // new_row = {'calories':600, 'duration':70, 'food':'cococola'}
+# // df = df.append(new_row, ignore_index=True)
+# 删除列 drop
+df = df.drop('duration', axis=1)  # 删除轴1的duration，即列名为duration的列
+print(df)
+# 删除行 drop
+df_drop = df.drop('day1') # 默认删除轴0的day1，即行名为day1的行
+print(df_drop)
+
+# todo 索引操作
+# 重置索引 reset_index
+df_reset = df.reset_index(drop=True)
+print(df_reset)
+# 设置索引 set_index 将一列设置为索引 drop是否保留被转换的列
+df_set = df.set_index(['calories'], drop=True)
+print(df_set)
+# 布尔索引
+print(df[df['calories'] > 400])
+
+# todo 数据类型
+# 查看数据类型 dtypes
+print(df.dtypes)
+# 转换数据类型 astype
+df['calories'] = df['calories'].astype('float32')
+print(df)
+
+# todo 合并与分割
+# concat
+'''
+pd.concat([df1, df2], ignore_index=True, join='outer',axis=1)
+
+axis：0轴（默认）按行拼接（增加行）, 1轴，按列拼接（增加列）；
+join：outer默认（拼接时取并集）；inner（拼接时取交集）
+ignore_index：默认False，即不重置dataframe的索引；True重置索引，从0开始
+
+'''
+new_row = pd.DataFrame([[700, 'fenta']], index=['day6'], columns=['calories', 'food'])
+df_row_concat = pd.concat([df, new_row])
+print(df_row_concat)
+new_col = pd.DataFrame({'name':['Iven', 'Rosenn', 'Starry', 'Bob', 'Alen']}, index=['day1', 'day2', 'day3', 'day4', 'day5'])
+df_col_concat = pd.concat([df, new_col], axis=1)
+print(df_col_concat)
+
+# merge
+'''
+pd.merge(df1,df2,on='列名',how='outer')   
+how：合并方式：how = 'inner'（默认）类似于取交集  'outer'，类似于取并集 left以左表为主表 right以右表为主表
+on： 用于连接的列名，若不指定则以两个Dataframe的列名的交集作为连接键
+'''
+new_col = pd.DataFrame({'food':['rice', 'banana', 'apple', 'bread', 'cococola'],  'name':['Iven', 'Rosenn', 'Starry', 'Bob', 'Alen']})
+df_col_merge = pd.merge(df, new_col, how='outer')
+print(df_col_merge)
+new_row = pd.DataFrame({'calories':900, 'food':'orange'},index=['day6'])
+df_row_merge = pd.merge(df, new_row, how='outer')
+print(df_row_merge)
 ```
 
 ### CSV
 ```python
+import pandas as pd
 
+'''
+CSV comma separated values 逗号分隔值 以纯文本形式存储表格数据
+是一种通用的、箱底简单的文件格式
+pandas可以处理CSV文件
+'''
+
+# 读取CSV文件 read_csv
+df = pd.read_csv('related_data/nba.csv')
+print(df.to_string()) # to_string可以返回dataframe类型的数据，若不使用，数据只显示前五行和后五行，中间用...代替
+print(df)
+
+# 存储CSV文件 to_csv
+name = ['Iven', 'Rosenn', 'Starry']
+age = [19, 20, 21]
+hobby = ['food', 'coding', 'travel']
+dict = {'name':name, 'age':age, 'hobby':hobby}
+df = pd.DataFrame(dict)
+df.to_csv('related_data/savetest.csv')
+
+# 数据处理 
+df = pd.read_csv('related_data/nba.csv')
+# head(n) 读取前面n行，默认5行
+print(df.head(3))
+# tail(n) 读取尾部n行，默认5行
+print(df.tail(3))
+# info() 返回表格的一些基本信息
+print(df.info())
 ```
 
 ### JSON
 ```python
+import pandas as pd
+import json
+from glom import glom
 
+'''
+JSON Java Script Objection Notation  Java Script对象表示法，是存储和交换文本信息的语法，类似XML
+JSON比XML更小、更快、更易解析
+pandas可以处理JSON数据
+'''
+
+# 读取JSON文件 read_json
+df = pd.read_json('related_data/test.json')
+print(df.to_string())
+
+# 也可以直接处理JSON字符串
+data = [
+    {
+        "id": "1",
+        "name": "Iven",
+        "age": 19
+    },
+    {
+        "id": "2",
+        "name": "Rosenn",
+        "age": 21
+    },
+    {
+        "id": "3",
+        "name": "Bob",
+        "age": 22
+    }
+]
+df = pd.DataFrame(data)
+print(df)
+
+# 字典转DataFrame JSON对象与字典具有相同的格式
+s = {
+    'col1':{'row1':1, 'row2':2, 'row3':3},
+    'col2':{'row4':4, 'row5':5, 'row6':6},
+}
+df = pd.DataFrame(s) # 读取JSON文件转dataframe
+print(df)
+
+# 内嵌的JSON数据文件
+df = pd.read_json('related_data/nested_list.json')
+print(df)
+# 这时候需要json_normalize()将内嵌的数据完整解析 record_path设置要展开的内嵌数据名 meta展示无需展开的其他数据名
+with open('related_data/nested_list.json', 'r') as f: 
+    data = json.loads(f.read()) # 使用python的json模块读取数据 字典结构
+df_nested_list = pd.json_normalize(data, record_path=['students'], meta=['school_name', 'class']) 
+print(df_nested_list)
+
+# 更复杂的json文件
+with open ('related_data/nested_mix.json', 'r') as f:
+    data = json.loads(f.read())
+df = pd.json_normalize(data, record_path=['students'], meta=['class', ['info', 'president'], ['info', 'contacts', 'tel']])
+print(df)
+
+# 读取内嵌数据中的一组数据 glom模块允许我们使用. 来访问内嵌对象的属性
+df = pd.read_json('related_data/nested_deep.json')
+data = df['students'].apply(lambda row: glom(row, 'grade.math'))
+print(data)
 ```
 
 ### 数据清洗
