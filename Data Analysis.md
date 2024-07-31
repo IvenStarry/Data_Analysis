@@ -2516,6 +2516,27 @@ value = s[2] # 不良好的书写习惯 尽量使用数据标签获取值
 print(value)
 print(s['a'])
 
+# 保留字 in
+b = pd.Series([9, 8, 7, 6], ['a', 'b', 'c', 'd'])
+print('c' in b)
+print(0 in b)
+
+# python .get()方法
+'''
+python字典的get方法会返回指定键的值，dict.get(‘键’)，返回“键”对应的“值”，如果键不在字典中则返回默认值None。
+
+dict1={'国家':'中国','首都':'北京'}
+print(dict1.get('国家'))
+print(dict1.get('首都'))
+print(dict1.get('省会'))
+输出为：中国 北京 None
+
+如果键不在字典中，想要自己设置返回值，可以这样处理，
+例如dict.get('键’,'never')
+键在字典中，则返回键对应的值，键不在字典中，则返回never。
+'''
+print(b.get('f', 100))
+
 # 获取多个值
 subset = s[1:4]
 print(subset)
@@ -2558,6 +2579,11 @@ print(filtered_series)
 result = np.sqrt(s_dropped)
 print(result)
 
+# todo 对齐操作 series + series
+a = pd.Series([1, 2, 3], ['c', 'd', 'e'])
+b = pd.Series([9, 8, 7, 6], ['a', 'b', 'c', 'd'])
+print(a + b)
+
 # todo 计算统计数据 使用Series的方法来计算描述性统计
 print(s_dropped.sum()) # 计算Series的总和
 print(s_dropped.mean()) # 平均值
@@ -2583,6 +2609,12 @@ max_index = s.idxmax()
 print(max_index)
 min_index = s.idxmin()
 print(min_index)
+
+# name 属性 series对象和索引都可以有一个名字，存放在属性name中
+b = pd.Series([9, 8, 7, 6], ['a', 'b', 'c', 'd'])
+b.name = 'Series对象'
+b.index.name = '索引列'
+print(b)
 
 # 其他属性和方法
 print(s.dtype) # 数据类型
@@ -2675,7 +2707,6 @@ df = pd.DataFrame({'Name':s1, 'Age':s2, 'City':s3})
 print(df)
 
 # todo 访问DataFrame元素
-print('ooooooooooooooooooooooooooooooooooooooooo')
 # 访问行 loc 返回指定行的数据，若没有设置索引，第一行索引为0，第二行为1
 data = {'calories': [420, 280, 400], 'duration':[50, 45, 40]}
 df = pd.DataFrame(data)
@@ -2736,6 +2767,44 @@ df_set = df.set_index(['calories'], drop=True)
 print(df_set)
 # 布尔索引
 print(df[df['calories'] > 400])
+'''
+append(idx)         连接另一个index对象，产生新的index对象
+diff(idx)           计算差集，产生新的index对象
+intersection(idx)   计算交集
+union(idx)          计算并集
+delete(loc)         删除loc位置的元素
+insert(loc,e)       在loc位置添加一个元素e  
+'''
+df_del = df.columns.delete(1)
+print(df_del)
+df_ins = df.index.insert(1, 'day6')
+print(df_ins)
+print(df)
+df_rei = df.reindex(index=df_ins, columns=df_del)
+print(df_rei)
+df_rei = df.reindex(index=df_ins, columns=df_del, method='bfill')
+print(df_rei)
+df_rei = df.reindex(index=df_ins, columns=df_del, method='ffill')
+print(df_rei)
+
+# 重排索引 
+'''
+reindex(index=None, columns=None, ...) 重拍已有的序列
+
+index,columns 新的行列自定义索引
+fill_value    重新索引中，用于填充缺失位置的值
+method        填充方法，ffill 会将上一个非 NaN 的值填充到此位置  bfill会将下一个非 NaN 的值填充到此位置 
+                跟行列插入的位置无关(1,)(不是找索引0 索引1的数值)  跟索引值名称有关(找day6前一个索引day5数值和后一个索引NAN)
+limit         最大填充量
+copy          True生成新对象
+'''
+df_reindex = df.reindex(index = ['day1', 'day3', 'day2', 'day5', 'day4'], columns=['food', 'calories'])
+print(df)
+print(df_reindex)
+new_df_insert = df_reindex.columns.insert(2, '新增') # insert 在列的指定位置加新列后的所有列名
+print(new_df_insert)
+new_df = df_reindex.reindex(columns=new_df_insert, fill_value=200)
+print(new_df)
 
 # todo 数据类型
 # 查看数据类型 dtypes
@@ -2773,6 +2842,48 @@ print(df_col_merge)
 new_row = pd.DataFrame({'calories':900, 'food':'orange'},index=['day6'])
 df_row_merge = pd.merge(df, new_row, how='outer')
 print(df_row_merge)
+
+
+# todo 算术运算
+# 根据行列索引，补齐后运算，默认产生浮点数，补齐时填充NAN。二维和一维、一维和零维间为广播运算，+ - * / 运算产生新对象
+a = pd.DataFrame(np.arange(12).reshape(3, 4))
+b = pd.DataFrame(np.arange(20).reshape(4, 5))
+print(a)
+print(b)
+print(a + b)
+print(a * b)
+'''
+add(d, **argws)  类型间加法运算
+sub(d, **argws)  类型间减法运算
+mul(d, **argws)  类型间乘法运算
+div(d, **argws)  类型间除法运算
+'''
+print(b.add(a, fill_value=8888)) # 哪空替代哪 在运算
+print(a.mul(b, fill_value=1))
+
+# 不同维度间为广播运算，一维Series默认在轴1运算
+a = pd.Series(np.arange(4))
+b = pd.DataFrame(np.arange(20).reshape(4, 5))
+print(a - 10)
+print(b - a) # b每行减去a的转置
+print(b.sub(a, axis=0)) # 使用运算方法可以让一维Series在轴0运算
+
+# todo 比较运算法则
+# 只能比较相同索引的元素，不可以补齐，二维和一维、一维和零维间为广播运算，> < >= <= == !=运算产生布尔对象
+a = pd.DataFrame(np.arange(12).reshape(3, 4))
+b = pd.DataFrame(np.arange(12, 0, -1).reshape(3, 4))
+print(a)
+print(b)
+print(a > b)
+print(a == b)
+
+# 不同维度广播
+a = pd.Series(np.arange(4))
+b = pd.DataFrame(np.arange(12).reshape(3, 4))
+print(a)
+print(b)
+print(a > b)
+print(b > 0)
 ```
 
 ### CSV
@@ -2876,15 +2987,361 @@ print(data)
 
 ### 数据清洗
 ```python
+import pandas as pd
 
+'''
+数据清洗是对一些没有用的数据进行处理的过程
+很多数据集存在数据缺失、数据格式错误或重复数据的情况，为了使数据分析更加准确，就需要对这些数据进行处理
+有四种空数据：n/a NA -- na
+'''
+
+# 清洗空值 
+'''
+dropna(axis=0, how='any', thresh=None, subset=None, inplace=False)
+
+axis：默认为 0，表示逢空值剔除整行，如果设置参数 axis＝1 表示逢空值去掉整列。
+how：默认为 'any' 如果一行（或一列）里任何一个数据有出现 NA 就去掉整行，如果设置 how='all' 一行（或列）都是 NA 才去掉这整行。
+thresh：设置需要多少非空值的数据才可以保留下来的。
+subset：设置想要检查的列。如果是多个列，可以使用列名的 list 作为参数。
+inplace：如果设置 True，将计算得到的值直接覆盖之前的值并返回 None，修改的是源数据。
+
+isnull() 判断各个单元格是否为空
+'''
+
+df = pd.read_csv('related_data/property-data.csv')
+print(df.to_string())
+print(df['NUM_BEDROOMS'])
+print(df['NUM_BEDROOMS'].isnull()) # na是空数据但没被判为空数据
+
+# 指定空数据类型 na_values
+missing_values = ['n/a', 'na', '--']
+df = pd.read_csv('related_data/property-data.csv', na_values=missing_values)
+print(df['NUM_BEDROOMS'])
+print(df['NUM_BEDROOMS'].isnull())
+
+# 删除空数据的行 默认返回新的DataFrame
+new_df = df.dropna()
+print(new_df.to_string())
+df.dropna(inplace=True) # 直接修改原数据
+print(df.to_string())
+
+# 指定列有空值的行
+df = pd.read_csv('related_data/property-data.csv')
+df.dropna(subset=['ST_NUM'], inplace=True)
+print(df.to_string())
+
+# fillna() 替换一些空字段
+df = pd.read_csv('related_data/property-data.csv')
+df.fillna(12345, inplace=True)
+print(df.to_string())
+
+# 指定某一列来替换数据
+df = pd.read_csv('related_data/property-data.csv')
+df['PID'].fillna(12345, inplace=True)
+print(df.to_string())
+
+# 替换空单元格的常用方法是计算列的均值、中位数或众数
+df = pd.read_csv('related_data/property-data.csv')
+x = df['ST_NUM'].mean() # mean() 计算均值
+df_mean = df['ST_NUM'].fillna(x)
+print(df_mean.to_string())
+
+x = df['ST_NUM'].median() # median() 计算中位数
+df_median = df['ST_NUM'].fillna(x)
+print(df_median.to_string())
+
+x = df['ST_NUM'].mode() # mode() 计算众数
+df_mode = df['ST_NUM'].fillna(x)
+print(df_mode.to_string())
+
+# 清洗格式错误数据
+# 通过包含空单元格的行，或者将列中的所有单元格转换为相同格式的数据
+data = {
+    'Date':['2020/12/01', '2020/12/02', '20201226'],
+    'duration':[50, 40, 45]
+}
+df = pd.DataFrame(data, index=['day1', 'day2', 'day3'])
+df['Date'] = pd.to_datetime(df['Date'], format='mixed') # to_datetime格式化日期
+print(df.to_string())
+
+data = {
+    'Date':['2020/12/01', '2020/12/02', '20201226'],
+    'duration':[50, 40, 12345] # 12345 数据是错误的
+}
+df = pd.DataFrame(data)
+df.loc[2, 'duration'] = 30 # 修改错误日期  loc(row_index, column_index)
+print(df.to_string())
+
+data = {
+    'Date':['2020/12/01', '2020/12/02', '20201226'],
+    'duration':[50, 40, 12345] # 12345 数据是错误的
+}
+df = pd.DataFrame(data)
+for x in df.index:
+    if df.loc[x, 'duration'] > 120: # 设置条件语句将大于120的值设为120
+        df.loc[x, 'duration'] = 120
+print(df.to_string())
+
+data = {
+    'Date':['2020/12/01', '2020/12/02', '20201226'],
+    'duration':[50, 40, 12345] # 12345 数据是错误的
+}
+df = pd.DataFrame(data)
+for x in df.index:
+    if df.loc[x, 'duration'] > 120: # 将错误数据的行删除
+        df.drop(x, inplace=True)
+print(df.to_string())
+
+# 清洗重复数据 
+data = {
+    'name':['Iven', 'Iven', 'Rosenn', 'Starry'],
+    'age':[21, 21, 22, 23] # 数据重读
+}
+df = pd.DataFrame(data)
+# duplicated() 如果重复返回True 否则False 
+print(df.duplicated()) 
+# drop_duplicates()删除重复数据
+df.drop_duplicates(inplace=True)
+print(df)
 ```
 
 ### 常用函数
 ```python
+import pandas as pd
+import numpy as np
+'''
+读取数据
 
+pd.read_csv(filename)	                读取 CSV 文件
+pd.read_excel(filename)	                读取 Excel 文件
+pd.read_sql(query, connection_object)	从 SQL 数据库读取数据
+pd.read_json(json_string)	            从 JSON 字符串中读取数据
+pd.read_html(url)	                    从 HTML 页面中读取数据
+'''
+# # 读取 CSV 文件
+# df = pd.read_csv('data.csv')
+# # 读取 Excel 文件
+# df = pd.read_excel('data.xlsx')
+# # 从 SQL 数据库读取数据
+# import sqlite3
+# conn = sqlite3.connect('database.db')
+# df = pd.read_sql('SELECT * FROM table_name', conn)
+# # 从 JSON 字符串中读取数据
+# json_string = '{"name":"john", "age":30, "city":"chengdu"}'
+# df = pd.read_json(json_string)
+# # 从 HTML 页面中读取数据
+# url = 'https://github.com/IvenStarry'
+# dfs = pd.read_html(url)
+# df = dfs[0]
+# print(df)
+
+# '''
+# 查看数据
+
+# df.head(n)	    显示前 n 行数据
+# df.tail(n)	    显示后 n 行数据
+# df.info()	    显示数据的信息，包括列名、数据类型、缺失值等
+# df.describe()	显示数据的基本统计信息，包括均值、方差、最大值、最小值等
+# df.shape    	显示数据的行数和列数
+# '''
+# print(df.head())
+# print(df.tail())
+# print(df.info())
+# print(df.describe())
+# print(df.shape)
+
+'''
+数据清洗
+
+df.dropna()	                        删除包含缺失值的行或列
+df.fillna(value)	                将缺失值替换为指定的值
+df.replace(old_value, new_value)	将指定值替换为新值
+df.duplicated()	                    检查是否有重复的数据
+df.drop_duplicates()	            删除重复的数据
+'''
+
+'''
+数据选择和切片
+
+df[column_name]	                                选择指定的列；
+df.loc[row_index, column_name]	                通过标签选择数据；
+df.iloc[row_index, column_index]	            通过位置选择数据；
+df.ix[row_index, column_name]	                通过标签或位置选择数据；
+df.filter(items=[column_name1, column_name2])	选择指定的列；
+df.filter(regex='regex')	                    选择列名匹配正则表达式的列；
+df.sample(n)	                                随机选择 n 行数据。
+'''
+
+'''
+数组排序
+
+df.sort_values(column_name)	                                            按照指定列的值排序
+df.sort_values([column_name1, column_name2], ascending=[True, False])	按照多个列的值排序
+Series.sort_values(axis=0, ascending=True)
+DataFrame.sort_values(by, axis=0, ascending=True)                       by axis轴上某个索引或索引列表
+df.sort_index(axis=0, ascending=True)	                                按照索引排序
+'''
+a = pd.DataFrame(np.arange(20).reshape(4, 5), index=['c', 'a', 'd', 'b'])
+print(a)
+print(a.sort_index())
+print(a.sort_index(ascending=False))
+print(a.sort_index(axis=1, ascending=False))
+print(a.sort_values(2, ascending=False))
+print(a.sort_values('a', axis=1, ascending=False))
+
+# 若有NAN 排序统一置于末尾
+a = pd.DataFrame(np.arange(20).reshape(4, 5), index=['c', 'a', 'd', 'b'])
+b = pd.DataFrame(np.arange(12).reshape(3, 4), index=['a', 'b', 'c'])
+print(a + b)
+print((a+b).sort_values(2))
+print((a+b).sort_values(2, ascending=False))
+
+'''
+数组的分组和聚合
+
+df.groupby(column_name)                        	 按照指定列进行分组；
+df.aggregate(function_name)	                     对分组后的数据进行聚合操作；
+df.pivot_table(values, index, columns, aggfunc)	 生成透视表。
+'''
+
+'''
+数据合并
+
+pd.concat([df1, df2])	将多个数据框按照行或列进行合并；
+pd.merge(df1, df2, on=column_name)	按照指定列将两个数据框进行合并。
+'''
+
+'''
+数据选择和过滤
+
+df.loc[row_indexer, column_indexer]	    按标签选择行和列。
+df.iloc[row_indexer, column_indexer]	按位置选择行和列。
+df[df['column_name'] > value]	        选择列中满足条件的行。
+df.query('column_name > value')	        使用字符串表达式选择列中满足条件的行。
+'''
+
+'''
+数据统计和描述
+
+df.describe()	计算基本统计信息，如均值、标准差、最小值、最大值等。
+df.mean()	    计算每列的平均值。
+df.median()	    计算每列的中位数。
+df.mode()	    计算每列的众数。
+df.count()	    计算每列非缺失值的数量。
+.argmin()       计算数据最大值的索引位置(自动索引) 或被弃用
+.argmax()       计算数据最小值的索引位置(自动索引)
+.idxmin()       计算数据最大值的索引(自定义索引)
+.idxmax()       计算数据最小值的索引(自定义索引)
+'''
+
+df = pd.read_json('related_data/data.json')
+print(df)
+# df = df.dropna()
+# print(df)
+df = df.fillna({'age':0, 'score':0})
+print(df)
+# 重命名列名
+df = df.rename(columns={'name':'姓名', 'age':'年龄', 'gender':'性别', 'score':'成绩'})
+print(df)
+# 按成绩排序
+df = df.sort_values(by='成绩', ascending=False)
+print(df)
+# 按性别分组计算平均年龄和成绩
+grouped = df.groupby('性别').agg({'年龄':'mean', '成绩':'mean'}) # df.aggregate(function_name) 在这个例子中，对 年龄和成绩 应用了 mean 函数
+print(grouped)
+# 选择成绩大于90的行，并只保留姓名和成绩两列
+sorted = df.loc[df['成绩'] >= 90, ['姓名' , '成绩']]
+print(sorted)
+print(df.count())
+print(df.idxmax())
+
+'''
+累计统计分析函数
+
+.cumsum()             前n个数的和
+.cumprod()            前n个数的积
+.cummax()             前n个数的最大值
+.cummin()             前n个数的最小值
+
+.rolling(w).sum()     依次计算相邻w个元素的和
+.rolling(w).mean()    依次计算相邻w个元素的算术平均值
+.rolling(w).var()     依次计算相邻w个元素的方差
+.rolling(w).std()     依次计算相邻w个元素的标准差
+.rolling(w).min()     依次计算相邻w个元素的最小值
+.rolling(w).max()     依次计算相邻w个元素的最大值
+'''
+
+a = pd.DataFrame(np.arange(20).reshape(4, 5), index=['c', 'a', 'd', 'b'])
+print(a)
+print(a.cumsum() )
+print(a.cumprod())
+print(a.cummax() )
+print(a.cummin() )
+print(a.rolling(2).sum()) # 计算包括自己的前两项和 第一列前面没有数值 返回NAN
+print(a.rolling(2).mean())
+print(a.rolling(2).var())
+print(a.rolling(2).std())
+print(a.rolling(2).min())
+print(a.rolling(2).max()) 
 ```
 
 ### 相关性分析
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407311319986.png)
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407311317122.png)
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407311318545.png)
 ```python
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 
+'''
+df.cov()  计算协方差矩阵
+df.corr() 计算相关系数矩阵 pearson spearman kendall系数
+
+在pandas中，数据的相关性分析是通过计算不同变量之间的相关系数来了解它们之间的关系
+数据相关性是一项重要的分析任务，可以帮助我们理解各个变量之间的关系
+使用 corr() 方法计算数据集中每列之间的关系
+
+df.corr(method='pearson', minperiods=1)
+method (可选): 字符串类型，用于指定计算相关系数的方法。默认是 'pearson'，
+                还可以选择 'kendall'（Kendall Tau 相关系数）或 'spearman'（Spearman 秩相关系数）。
+min_periods (可选): 表示计算相关系数时所需的最小观测值数量。默认值是 1，即只要有至少一个非空值，就会进行计算。
+                    如果指定了 min_periods，并且在某些列中的非空值数量小于该值，则相应列的相关系数将被设为 NaN。
+
+返回一个相关系数矩阵，矩阵的行和列对应数据框的列名，矩阵的元素是对应列之间的相关系数。
+
+常见的相关性系数包括 Pearson 相关系数和 Spearman 秩相关系数：
+Pearson 相关系数: 即皮尔逊相关系数，用于衡量了两个变量之间的线性关系强度和方向。它的取值范围在 -1 到 1 之间，其中 -1 表示完全负相关，
+                    1 表示完全正相关，0 表示无线性相关。可以使用 corr() 方法计算数据框中各列之间的 Pearson 相关系数。
+Spearman 相关系数：即斯皮尔曼相关系数，是一种秩相关系数。用于衡量两个变量之间的单调关系，即不一定是线性关系。
+                它通过比较变量的秩次来计算相关性。可以使用 corr(method='spearman') 方法计算数据框中各列之间的 Spearman 相关系数。
+'''
+
+data = {'A':[1, 2, 3, 4, 5], 'B':[5, 4, 3, 2, 1]}
+df =pd.DataFrame(data)
+# 计算 pearson 相关系数
+correlation_matrix = df.corr()
+print(correlation_matrix) # 因为数据集是线性相关的，因此主对角线值为1，副对角线值为-1完全负相关
+# 计算 spearman 秩相关系数
+correlation_matrix = df.corr(method='spearman')
+print(correlation_matrix) # 结果与pearman相关系数矩阵相同，因为两个变量之间完全负相关
+
+# 可视化相关性   使用Seaborn库绘制更加精美的相关系数矩阵图像
+sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt='.2f') # 绘制热力图 annot: 默认为False，为True的话，会在格子上显示数字
+plt.show()
+```
+
+### 实例_房价涨幅与M2增幅的相关性
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+
+hprice = pd.Series([3.04, 22.93, 12.75, 22.6, 12.33], index=['2008', '2009', '2010', '2011', '2012'])
+m2 = pd.Series([8.18, 18.38, 9.13, 7.82, 6.69], index=['2008', '2009', '2010', '2011', '2012'])
+
+plt.rcParams['font.family'] = 'Source Han Sans CN'
+plt.plot(hprice, '-o')
+plt.plot(m2, '-x')
+plt.title(f'相关系数矩阵：{hprice.corr(m2)}')
+plt.show()
 ```

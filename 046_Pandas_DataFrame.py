@@ -42,7 +42,6 @@ df = pd.DataFrame({'Name':s1, 'Age':s2, 'City':s3})
 print(df)
 
 # todo 访问DataFrame元素
-print('ooooooooooooooooooooooooooooooooooooooooo')
 # 访问行 loc 返回指定行的数据，若没有设置索引，第一行索引为0，第二行为1
 data = {'calories': [420, 280, 400], 'duration':[50, 45, 40]}
 df = pd.DataFrame(data)
@@ -103,6 +102,44 @@ df_set = df.set_index(['calories'], drop=True)
 print(df_set)
 # 布尔索引
 print(df[df['calories'] > 400])
+'''
+append(idx)         连接另一个index对象，产生新的index对象
+diff(idx)           计算差集，产生新的index对象
+intersection(idx)   计算交集
+union(idx)          计算并集
+delete(loc)         删除loc位置的元素
+insert(loc,e)       在loc位置添加一个元素e  
+'''
+df_del = df.columns.delete(1)
+print(df_del)
+df_ins = df.index.insert(1, 'day6')
+print(df_ins)
+print(df)
+df_rei = df.reindex(index=df_ins, columns=df_del)
+print(df_rei)
+df_rei = df.reindex(index=df_ins, columns=df_del, method='bfill')
+print(df_rei)
+df_rei = df.reindex(index=df_ins, columns=df_del, method='ffill')
+print(df_rei)
+
+# 重排索引 
+'''
+reindex(index=None, columns=None, ...) 重拍已有的序列
+
+index,columns 新的行列自定义索引
+fill_value    重新索引中，用于填充缺失位置的值
+method        填充方法，ffill 会将上一个非 NaN 的值填充到此位置  bfill会将下一个非 NaN 的值填充到此位置 
+                跟行列插入的位置无关(1,)(不是找索引0 索引1的数值)  跟索引值名称有关(找day6前一个索引day5数值和后一个索引NAN)
+limit         最大填充量
+copy          True生成新对象
+'''
+df_reindex = df.reindex(index = ['day1', 'day3', 'day2', 'day5', 'day4'], columns=['food', 'calories'])
+print(df)
+print(df_reindex)
+new_df_insert = df_reindex.columns.insert(2, '新增') # insert 在列的指定位置加新列后的所有列名
+print(new_df_insert)
+new_df = df_reindex.reindex(columns=new_df_insert, fill_value=200)
+print(new_df)
 
 # todo 数据类型
 # 查看数据类型 dtypes
@@ -140,3 +177,45 @@ print(df_col_merge)
 new_row = pd.DataFrame({'calories':900, 'food':'orange'},index=['day6'])
 df_row_merge = pd.merge(df, new_row, how='outer')
 print(df_row_merge)
+
+
+# todo 算术运算
+# 根据行列索引，补齐后运算，默认产生浮点数，补齐时填充NAN。二维和一维、一维和零维间为广播运算，+ - * / 运算产生新对象
+a = pd.DataFrame(np.arange(12).reshape(3, 4))
+b = pd.DataFrame(np.arange(20).reshape(4, 5))
+print(a)
+print(b)
+print(a + b)
+print(a * b)
+'''
+add(d, **argws)  类型间加法运算
+sub(d, **argws)  类型间减法运算
+mul(d, **argws)  类型间乘法运算
+div(d, **argws)  类型间除法运算
+'''
+print(b.add(a, fill_value=8888)) # 哪空替代哪 在运算
+print(a.mul(b, fill_value=1))
+
+# 不同维度间为广播运算，一维Series默认在轴1运算
+a = pd.Series(np.arange(4))
+b = pd.DataFrame(np.arange(20).reshape(4, 5))
+print(a - 10)
+print(b - a) # b每行减去a的转置
+print(b.sub(a, axis=0)) # 使用运算方法可以让一维Series在轴0运算
+
+# todo 比较运算法则
+# 只能比较相同索引的元素，不可以补齐，二维和一维、一维和零维间为广播运算，> < >= <= == !=运算产生布尔对象
+a = pd.DataFrame(np.arange(12).reshape(3, 4))
+b = pd.DataFrame(np.arange(12, 0, -1).reshape(3, 4))
+print(a)
+print(b)
+print(a > b)
+print(a == b)
+
+# 不同维度广播
+a = pd.Series(np.arange(4))
+b = pd.DataFrame(np.arange(12).reshape(3, 4))
+print(a)
+print(b)
+print(a > b)
+print(b > 0)

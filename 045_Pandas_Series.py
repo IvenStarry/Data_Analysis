@@ -51,6 +51,27 @@ value = s[2] # 不良好的书写习惯 尽量使用数据标签获取值
 print(value)
 print(s['a'])
 
+# 保留字 in
+b = pd.Series([9, 8, 7, 6], ['a', 'b', 'c', 'd'])
+print('c' in b)
+print(0 in b)
+
+# python .get()方法
+'''
+python字典的get方法会返回指定键的值，dict.get(‘键’)，返回“键”对应的“值”，如果键不在字典中则返回默认值None。
+
+dict1={'国家':'中国','首都':'北京'}
+print(dict1.get('国家'))
+print(dict1.get('首都'))
+print(dict1.get('省会'))
+输出为：中国 北京 None
+
+如果键不在字典中，想要自己设置返回值，可以这样处理，
+例如dict.get('键’,'never')
+键在字典中，则返回键对应的值，键不在字典中，则返回never。
+'''
+print(b.get('f', 100))
+
 # 获取多个值
 subset = s[1:4]
 print(subset)
@@ -93,6 +114,11 @@ print(filtered_series)
 result = np.sqrt(s_dropped)
 print(result)
 
+# todo 对齐操作 series + series
+a = pd.Series([1, 2, 3], ['c', 'd', 'e'])
+b = pd.Series([9, 8, 7, 6], ['a', 'b', 'c', 'd'])
+print(a + b)
+
 # todo 计算统计数据 使用Series的方法来计算描述性统计
 print(s_dropped.sum()) # 计算Series的总和
 print(s_dropped.mean()) # 平均值
@@ -118,6 +144,12 @@ max_index = s.idxmax()
 print(max_index)
 min_index = s.idxmin()
 print(min_index)
+
+# name 属性 series对象和索引都可以有一个名字，存放在属性name中
+b = pd.Series([9, 8, 7, 6], ['a', 'b', 'c', 'd'])
+b.name = 'Series对象'
+b.index.name = '索引列'
+print(b)
 
 # 其他属性和方法
 print(s.dtype) # 数据类型
