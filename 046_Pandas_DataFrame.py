@@ -42,22 +42,35 @@ df = pd.DataFrame({'Name':s1, 'Age':s2, 'City':s3})
 print(df)
 
 # todo 访问DataFrame元素
-# 访问行 loc 返回指定行的数据，若没有设置索引，第一行索引为0，第二行为1
 data = {'calories': [420, 280, 400], 'duration':[50, 45, 40]}
 df = pd.DataFrame(data)
-print(df.loc[0])
-print(df.loc[1]) # 返回结果是一个Series数据
-print(df.loc[[0,1]]) # 返回一个dataframe数据
+print(df)
 
-# 访问列 loc[] iloc[]
-data = {'calories': [420, 280, 400], 'duration':[50, 45, 40]}
+# * 读取某行数据
+# 1. loc[row_label, column_label] 索引名 day1 day2 返回指定行的数据，若没有设置索引，第一行索引为0，第二行为1
+print(df.loc[1]) # 返回结果是一个Series数据
+print(df.loc[[0,1]]) # 返回第0行和第1行 是dataframe数据
 df = pd.DataFrame(data, index=['day1', 'day2', 'day3']) # 指定索引值
 print(df)
-print(df.loc['day2']) # df.loc[row_label, column_label] 索引名 day1 day2
-print(df.iloc[:, 0])  # df.iloc[row_index, column_index] 整数 0, 1, ...
+print(df.loc['day2']) # 访问day2这一行索引
+# 2. iloc[row_index, column_index] 整数 0, 1, ...
+print(df.iloc[0]) # 访问行索引位置为0的这一行数据
 
-# 访问单个元素 [列][行] 先得到一列Series 在得到Series中的一个数据
-print(df['calories'][0]) 
+# * 读取某列数据
+# 1. 使用列名访问
+print(df['calories'])
+# 2. loc[row_label, column_label] 索引名 day1 day2 返回指定行的数据，若没有设置索引，第一行索引为0，第二行为1
+print(df.loc[:, 'calories']) # 访问calories这一列
+# 3. iloc[row_index, column_index] 整数 0, 1, ...
+print(df.iloc[:, 0]) # 访问列索引位置为0的这一行数据
+
+# * 访问单个元素
+# 1. dataframe[列名][行索引] 先得到一列Series 在得到Series中的一个数据
+print(df['calories']['day2']) # calories这一列的day2行
+# 2. loc
+print(df.loc['day2']['calories'])
+# 3. iloc
+print(df.iloc[1, 0])
 
 # todo DataFrame 属性和方法
 print(df.shape)      # 形状
